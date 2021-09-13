@@ -1,22 +1,9 @@
-// import d3Select from 'd3-select';
 import * as d3 from 'd3';
 import { useEffect } from 'react';
-// import dynamic from 'next/dynamic';
-
-// const d3 = dynamic(
-//     async () => {
-//         const { default: defD3 } = await import('d3');
-//         return defD3;
-//     },
-//     {
-//         ssr: false,
-//     },
-// );
 
 const useD3 = () => {
     useEffect(() => {
-        const svg = d3.select('body').append('svg').attr('width', 1000).attr('height', 1000);
-        // const color = d3.scale.category20();
+        const svg = d3.select('body').append('svg').attr('width', '100vw').attr('height', '100vh');
         const line = d3.line();
         const drawObj = {
             isDown: false,
@@ -34,7 +21,7 @@ const useD3 = () => {
                     drawObj.currentPath = svg
                         .append('path')
                         .attr('class', 'currentPath')
-                        .style('stroke-width', 1)
+                        .style('stroke-width', 3)
                         .style('stroke', 'black')
                         .style('fill', 'none');
                 }
