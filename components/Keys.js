@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import KeysPresentation from './KeysPresentation';
-// import hotkeys from 'hotkeys-js';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 const Keys = () => {
     const [active, setActive] = useState({});
     const handleKey = (keyData) => {
+        keyData.preventDefault();
         setActive(keyData);
     };
-    useHotkeys('*', handleKey);
+    useHotkeys('*', handleKey, { filterPreventDefault: true });
 
     return <KeysPresentation pressedKey={active} />;
 };
