@@ -2,625 +2,532 @@
     "Meta": {
         "Shift": {
             "n": {
-                "desc": "Open a new window in Incognito mode",
-                "Chrome": true,
+                "Chrome": "Open a new window in Incognito mode",
                 "Mac": true
             },
             "h": {
-                "desc": "Open your home page in the current tab",
-                "Chrome": true,
+                "Chrome": "Open your home page in the current tab",
                 "Mac": true
             },
             "t": {
-                "desc": "Reopen previously closed tabs in the order they were closed",
-                "Chrome": true,
+                "Chrome": "Reopen previously closed tabs in the order they were closed",
                 "Mac": true
             },
             "w": {
-                "desc": "Close the current window",
-                "Chrome": true,
+                "Chrome": "Close the current window",
                 "Mac": true
             },
             "b": {
-                "desc": "Show or hide the Bookmarks Bar",
-                "Chrome": true,
+                "Chrome": "Show or hide the Bookmarks Bar",
                 "Mac": true
             },
             "j": {
-                "desc": "Open the Downloads page in a new tab",
-                "Chrome": true,
+                "Chrome": "Open the Downloads page in a new tab",
                 "Mac": true
             },
             "g": {
-                "desc": "Jump to the previous match to your Find Bar search",
-                "Chrome": true,
+                "Chrome": "Jump to the previous match to your Find Bar search",
                 "Mac": true
             },
             "m": {
-                "desc": "Log in as a different user, browse as a Guest, or access payment and password info",
-                "Chrome": true,
+                "Chrome": "Log in as a different user, browse as a Guest, or access payment and password info",
                 "Mac": true
             },
             "delete": {
-                "desc": "Open the Clear Browsing Data options",
-                "Chrome": true,
+                "Chrome": "Open the Clear Browsing Data options",
                 "Mac": true
             },
             "d": {
-                "desc": "Bookmark all tabs",
-                "Chrome": true,
+                "Chrome": "Bookmark all tabs",
                 "Mac": true
             }
         },
         "Alt": {
             "Shift": {
                 "i": {
-                    "desc": "Open a feedback form",
-                    "Chrome": true,
+                    "Chrome": "Open a feedback form",
                     "Mac": true
                 },
                 "a": {
-                    "desc": "Focus on inactive dialogs",
-                    "Chrome": true,
+                    "Chrome": "Focus on inactive dialogs",
                     "Mac": true
                 },
                 "r": {
-                    "desc": "Reload your current page, ignoring cached content",
-                    "Chrome": true,
+                    "Chrome": "Reload your current page, ignoring cached content",
                     "Mac": true
                 }
             },
             "arrowright": {
-                "desc": "Jump to the next open tab",
-                "Chrome": true,
+                "Chrome": "Jump to the next open tab",
                 "Mac": true
             },
             "arrowleft": {
-                "desc": "Jump to the previous open tab",
-                "Chrome": true,
+                "Chrome": "Jump to the previous open tab",
                 "Mac": true
             },
             "arrowup": {
-                "desc": "Cycle focus to unfocused dialog (if showing) and all toolbars",
-                "Chrome": true,
+                "Chrome": "Cycle focus to unfocused dialog (if showing) and all toolbars",
                 "Mac": true
             },
             "arrowdown": {
-                "desc": "Cycle focus to unfocused dialog (if showing) and all toolbars",
-                "Chrome": true,
+                "Chrome": "Cycle focus to unfocused dialog (if showing) and all toolbars",
                 "Mac": true
             },
             "f": {
-                "desc": "Search the web",
-                "Chrome": true,
+                "Chrome": "Search the web",
                 "Mac": true
             },
             "b": {
-                "desc": "Open the Bookmark Manager",
-                "Chrome": true,
+                "Chrome": "Open the Bookmark Manager",
                 "Mac": true
             },
             "i": {
-                "desc": "Open Developer Tools",
-                "Chrome": true,
+                "Chrome": "Open Developer Tools",
                 "Mac": true
             },
             "p": {
-                "desc": "Open the Page Setup dialog",
-                "Chrome": true,
+                "Chrome": "Open the Page Setup dialog",
                 "Mac": true
             },
             "u": {
-                "desc": "Display non-editable HTML source code for the current page",
-                "Chrome": true,
+                "Chrome": "Display non-editable HTML source code for the current page",
                 "Mac": true
             },
             "j": {
-                "desc": "Open the JavaScript Console",
-                "Chrome": true,
+                "Chrome": "Open the JavaScript Console",
                 "Mac": true
             }
         },
         "Ctrl": {
             "f": {
-                "desc": "Turn full-screen mode on or off",
-                "Chrome": true,
+                "Chrome": "Turn full-screen mode on or off",
                 "Mac": true
             }
         },
         "+": {
-            "desc": "Make everything on the page bigger",
-            "Chrome": true,
+            "Chrome": "Make everything on the page bigger",
             "Mac": true
         },
         "-": {
-            "desc": "Make everything on the page smaller",
-            "Chrome": true,
+            "Chrome": "Make everything on the page smaller",
             "Mac": true
         },
         "0": {
-            "desc": "Return everything on the page to default size",
-            "Chrome": true,
+            "Chrome": "Return everything on the page to default size",
             "Mac": true
         },
         "[": {
-            "desc": "Open the previous page in your browsing history for the current tab",
-            "Chrome": true,
+            "Chrome": "Open the previous page in your browsing history for the current tab",
             "Mac": true
         },
         "]": {
-            "desc": "Open the next page in your browsing history for the current tab",
-            "Chrome": true,
+            "Chrome": "Open the next page in your browsing history for the current tab",
             "Mac": true
         },
         "arrowleft": {
-            "desc": "Open the previous page in your browsing history for the current tab",
-            "Chrome": true,
+            "Chrome": "Open the previous page in your browsing history for the current tab",
             "Mac": true
         },
         "arrowright": {
-            "desc": "Open the next page in your browsing history for the current tab",
-            "Chrome": true,
+            "Chrome": "Open the next page in your browsing history for the current tab",
             "Mac": true
         },
         ",": {
-            "desc": "Open the Settings page in a new tab",
-            "Chrome": true,
+            "Chrome": "Open the Settings page in a new tab",
             "Mac": true
         },
         "d": {
-            "desc": "Bookmark this page",
-            "Chrome": true,
+            "Chrome": "Bookmark this page",
             "Mac": true
         },
         "s": {
-            "desc": "Save Page",
+            "Chrome": "Save Page",
             "Mac": true
         },
         "o": {
-            "desc": "Open File",
+            "Chrome": "Open File",
             "Mac": true
         },
         "p": {
-            "desc": "Print",
+            "Chrome": "Print",
             "Mac": true
         },
         "l": {
-            "desc": "Jump to the address bar",
-            "Chrome": true,
+            "Chrome": "Jump to the address bar",
             "Mac": true
         },
         "f": {
-            "desc": "Find on Page",
-            "Chrome": true,
+            "Chrome": "Find on Page",
             "Mac": true
         },
         "g": {
-            "desc": "Jump to the next match to your Find Bar search",
-            "Chrome": true,
+            "Chrome": "Jump to the next match to your Find Bar search",
             "Mac": true
         },
         "e": {
-            "desc": "When Find Bar is open, search for selected text",
-            "Chrome": true,
+            "Chrome": "When Find Bar is open, search for selected text",
             "Mac": true
         },
         "y": {
-            "desc": "Open the History page in a new tab",
-            "Chrome": true,
+            "Chrome": "Open the History page in a new tab",
             "Mac": true
         },
         "m": {
-            "desc": "Minimize the window",
-            "Chrome": true,
+            "Chrome": "Minimize the window",
             "Mac": true
         },
         "h": {
-            "desc": "Hide Google Chrome",
-            "Chrome": true,
+            "Chrome": "Hide Google Chrome",
             "Mac": true
         },
         "q": {
-            "desc": "Quit Google Chrome",
-            "Chrome": true,
+            "Chrome": "Quit Google Chrome",
             "Mac": true
         },
         "n": {
-            "desc": "Open a new window",
-            "Chrome": true,
+            "Chrome": "Open a new window",
             "Mac": true
         },
         "w": {
-            "desc": "Close the current tab or pop-up",
-            "Chrome": true,
+            "Chrome": "Close the current tab or pop-up",
             "Mac": true
         },
         "r": {
-            "desc": "Refresh",
+            "Chrome": "Refresh",
             "Mac": true
         },
         "t": {
-            "desc": "Open a new tab, and jump to it",
-            "Chrome": true,
+            "Chrome": "Open a new tab, and jump to it",
             "Mac": true
         },
         "1": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "2": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "3": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "4": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "5": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "6": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "7": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "8": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Mac": true
         },
         "9": {
-            "desc": "Jump to last tab",
-            "Chrome": true,
+            "Chrome": "Jump to last tab",
+            "Mac": true
+        },
+        "c": {
+            "Chrome": "Copy",
+            "Mac": true
+        },
+        "v": {
+            "Chrome": "Paste",
+            "Mac": true
+        },
+        "x": {
+            "Chrome": "Cut",
+            "Mac": true
+        },
+        "z": {
+            "Chrome": "Cancel last action",
             "Mac": true
         }
     },
     "Shift": {
-        "f10": {
-            "desc": "Display Context Menu",
-            "Safari": false
-        },
         "escape": {
-            "desc": "Open the Chrome Task Manager",
-            "Chrome": true,
+            "Chrome": "Open the Chrome Task Manager",
             "Windows": true
         }
     },
     "Ctrl": {
         "Shift": {
             "d": {
-                "desc": "Bookmark all tabs",
-                "Chrome": true,
+                "Chrome": "Bookmark all tabs",
                 "Windows": true
             },
             "b": {
-                "desc": "Show or hide the Bookmarks bar",
-                "Chrome": true,
+                "Chrome": "Show or hide the Bookmarks bar",
                 "Windows": true
             },
             "g": {
-                "desc": "Jump to the previous match to your Find Bar search",
-                "Chrome": true,
+                "Chrome": "Jump to the previous match to your Find Bar search",
                 "Windows": true
             },
             "o": {
-                "desc": "Open the Bookmarks Manager",
-                "Chrome": true,
+                "Chrome": "Open the Bookmarks Manager",
                 "Windows": true
             },
             "n": {
-                "desc": "Open a new window in Incognito mode",
-                "Chrome": true,
+                "Chrome": "Open a new window in Incognito mode",
                 "Windows": true
             },
             "t": {
-                "desc": "Reopen previously closed tabs in the order they were closed",
-                "Chrome": true,
+                "Chrome": "Reopen previously closed tabs in the order they were closed",
                 "Windows": true
             },
             "w": {
-                "desc": "Close the current window",
-                "Chrome": true,
+                "Chrome": "Close the current window",
                 "Windows": true,
                 "Mac": true
             },
             "j": {
-                "desc": "Open Developer Tools",
-                "Chrome": true,
+                "Chrome": "Open Developer Tools",
                 "Windows": true
             },
             "m": {
-                "desc": "Log in a different user or browse as a Guest",
-                "Chrome": true,
+                "Chrome": "Log in a different user or browse as a Guest",
                 "Windows": true
             },
             "tab": {
-                "desc": "Jump to the previous open tab",
-                "Chrome": true
+                "Chrome": "Jump to the previous open tab"
             },
             "arrowright": {
-                "desc": "Move tabs right with keyboard focus",
-                "Chrome": true,
+                "Chrome": "Move tabs right with keyboard focus",
                 "Windows": true
             },
             "arrowleft": {
-                "desc": "Move tabs left with keyboard focus",
-                "Chrome": true,
+                "Chrome": "Move tabs left with keyboard focus",
                 "Windows": true
             },
             "delete": {
-                "desc": "Open the Clear Browsing Data options",
-                "Chrome": true,
+                "Chrome": "Open the Clear Browsing Data options",
                 "Windows": true
             }
         },
+        "c": {
+            "Chrome": "Copy",
+            "Windows": true
+        },
+        "v": {
+            "Chrome": "Paste",
+            "Windows": true
+        },
+        "x": {
+            "Chrome": "Cut",
+            "Windows": true
+        },
+        "z": {
+            "Chrome": "Cancel last action",
+            "Windows": true
+        },
         "+": {
-            "desc": "Make everything on the page bigger",
-            "Chrome": true,
+            "Chrome": "Make everything on the page bigger",
             "Windows": true
         },
         "-": {
-            "desc": "Make everything on the page smaller",
-            "Chrome": true,
+            "Chrome": "Make everything on the page smaller",
             "Windows": true
         },
         "0": {
-            "desc": "Return everything on the page to default size",
-            "Chrome": true,
+            "Chrome": "Return everything on the page to default size",
             "Windows": true
         },
         "l": {
-            "desc": "Jump to the address bar",
-            "Chrome": true,
+            "Chrome": "Jump to the address bar",
             "Windows": true
         },
         "n": {
-            "desc": "Open a new window",
-            "Chrome": true,
+            "Chrome": "Open a new window",
             "Windows": true
         },
         "t": {
-            "desc": "Open a new tab, and jump to it",
-            "Chrome": true,
+            "Chrome": "Open a new tab, and jump to it",
             "Windows": true
         },
         "tab": {
-            "desc": "Jump to the next open tab",
-            "Chrome": true
+            "Chrome": "Jump to the next open tab"
         },
         "w": {
-            "desc": "Close the current tab",
-            "Chrome": true,
+            "Chrome": "Close the current tab",
             "Windows": true,
             "Mac": true
         },
         "h": {
-            "desc": "History",
-            "Chrome": true,
+            "Chrome": "History",
             "Windows": true
         },
         "j": {
-            "desc": "Downloads",
-            "Chrome": true,
+            "Chrome": "Downloads",
             "Windows": true
         },
         "f": {
-            "desc": "Find on page",
-            "Chrome": true,
+            "Chrome": "Find on page",
             "Windows": true
         },
         "k": {
-            "desc": "Search from anywhere on the page",
-            "Chrome": true,
+            "Chrome": "Search from anywhere on the page",
             "Windows": true
         },
         "e": {
-            "desc": "Search from anywhere on the page",
-            "Chrome": true,
+            "Chrome": "Search from anywhere on the page",
             "Windows": true
         },
         "u": {
-            "desc": "Display non-editable HTML source code for the current page",
-            "Chrome": true,
+            "Chrome": "Display non-editable HTML source code for the current page",
             "Windows": true
         },
         "g": {
-            "desc": "Jump to the next match to your Find Bar search",
-            "Chrome": true,
+            "Chrome": "Jump to the next match to your Find Bar search",
             "Windows": true
         },
         "s": {
-            "desc": "Save Page",
+            "Chrome": "Save Page",
             "Windows": true
         },
         "o": {
-            "desc": "Open File",
+            "Chrome": "Open File",
             "Windows": true
         },
         "r": {
-            "desc": "Refresh",
+            "Chrome": "Refresh",
             "Windows": true
         },
         "p": {
-            "desc": "Print",
+            "Chrome": "Print",
             "Windows": true
         },
         "d": {
-            "desc": "Bookmark this page",
-            "Chrome": true,
+            "Chrome": "Bookmark this page",
             "Windows": true
-        },
-        "i": {
-            "desc": "Bookmarks Toolbar",
-            "All": false,
-            "IE": true
         },
         "f5": {
-            "desc": "Move cursor to the address bar",
-            "Chrome": true,
-            "Windows": true
-        },
-        "f11": {
-            "desc": "Fit to Width",
-            "All": false,
-            "Opera": true,
+            "Chrome": "Move cursor to the address bar",
             "Windows": true
         },
         "1": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "2": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "3": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "4": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "5": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "6": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "7": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "8": {
-            "desc": "Jump to a specific tab",
-            "Chrome": true,
+            "Chrome": "Jump to a specific tab",
             "Windows": true
         },
         "9": {
-            "desc": "Jump to the rightmost tab",
-            "Chrome": true,
+            "Chrome": "Jump to the rightmost tab",
             "Windows": true
         }
     },
     "Alt": {
         "Shift": {
             "t": {
-                "desc": "Set focus on the first item in the Chrome toolbar",
-                "Chrome": true,
+                "Chrome": "Set focus on the first item in the Chrome toolbar",
                 "Windows": true
             },
             "i": {
-                "desc": "Open a feedback form",
-                "Chrome": true,
+                "Chrome": "Open a feedback form",
                 "Windows": true
             },
             "a": {
-                "desc": "Focus on inactive dialogs",
-                "Chrome": true,
+                "Chrome": "Focus on inactive dialogs",
                 "Windows": true
             }
         },
         "home": {
-            "desc": "Open your home page in the current tab",
-            "Chrome": true,
+            "Chrome": "Open your home page in the current tab",
             "Windows": true
         },
         "arrowleft": {
-            "desc": "Open the previous page from your browsing history in the current tab",
-            "Chrome": true,
+            "Chrome": "Open the previous page from your browsing history in the current tab",
             "Windows": true,
             "Mac": "Move your cursor to the beginning of the previous word in a text field"
         },
         "arrowright": {
-            "desc": "Open the next page from your browsing history in the current tab",
-            "Chrome": true,
+            "Chrome": "Open the next page from your browsing history in the current tab",
             "Windows": true,
             "Mac": "Move your cursor to the back of the next word in a text field"
         },
         "d": {
-            "desc": "Jump to the address bar",
-            "Chrome": true,
+            "Chrome": "Jump to the address bar",
             "Windows": true
         },
         "f": {
-            "desc": "Open the Chrome menu",
-            "Chrome": true,
+            "Chrome": "Open the Chrome menu",
             "Windows": true
         },
         "e": {
-            "desc": "Open the Chrome menu",
-            "Chrome": true,
+            "Chrome": "Open the Chrome menu",
             "Windows": true
         },
         "f6": {
-            "desc": "Skip to web contents",
-            "Chrome": true,
+            "Chrome": "Skip to web contents",
             "Windows": true
         }
     },
     "f1": {
-        "desc": "Open the Chrome Help Center in a new tab",
-        "Chrome": true,
+        "Chrome": "Open the Chrome Help Center in a new tab",
         "Windows": true
     },
     "f3": {
-        "desc": "Find on page",
-        "Chrome": true,
+        "Chrome": "Find on page",
         "Windows": true
     },
     "f5": {
-        "desc": "Refresh",
+        "Chrome": "Refresh",
         "Windows": true
     },
     "f6": {
-        "desc": "Switch focus to unfocused dialog (if showing) and all toolbars / Jump to the address bar",
-        "Chrome": true,
+        "Chrome": "Switch focus to unfocused dialog (if showing) and all toolbars / Jump to the address bar",
         "Windows": true
     },
     "f7": {
-        "desc": "Turn on caret browsing",
-        "Chrome": true,
+        "Chrome": "Turn on caret browsing",
         "Windows": true,
         "Mac": true
     },
     "f10": {
-        "desc": "Set focus on the rightmost item in the Chrome toolbar",
-        "Chrome": true,
+        "Chrome": "Set focus on the rightmost item in the Chrome toolbar",
         "Windows": true
     },
     "f11": {
-        "desc": "Full Screen View",
-        "Windows": true,
-        "Chrome": true
+        "Chrome": "Full Screen View",
+        "Windows": true
     },
     "f12": {
-        "desc": "Open Developer Tools",
-        "Chrome": true,
+        "Chrome": "Open Developer Tools",
         "Windows": true,
         "Mac": true
     }
