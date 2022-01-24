@@ -1,0 +1,534 @@
+{
+    "Meta": {
+        "Shift": {
+            "n": {
+                "Chrome": "Open a new window in Incognito mode",
+                "Mac": true
+            },
+            "h": {
+                "Chrome": "Open your home page in the current tab",
+                "Mac": true
+            },
+            "t": {
+                "Chrome": "Reopen previously closed tabs in the order they were closed",
+                "Mac": true
+            },
+            "w": {
+                "Chrome": "Close the current window",
+                "Mac": true
+            },
+            "b": {
+                "Chrome": "Show or hide the Bookmarks Bar",
+                "Mac": true
+            },
+            "j": {
+                "Chrome": "Open the Downloads page in a new tab",
+                "Mac": true
+            },
+            "g": {
+                "Chrome": "Jump to the previous match to your Find Bar search",
+                "Mac": true
+            },
+            "m": {
+                "Chrome": "Log in as a different user, browse as a Guest, or access payment and password info",
+                "Mac": true
+            },
+            "delete": {
+                "Chrome": "Open the Clear Browsing Data options",
+                "Mac": true
+            },
+            "d": {
+                "Chrome": "Bookmark all tabs",
+                "Mac": true
+            }
+        },
+        "Alt": {
+            "Shift": {
+                "i": {
+                    "Chrome": "Open a feedback form",
+                    "Mac": true
+                },
+                "a": {
+                    "Chrome": "Focus on inactive dialogs",
+                    "Mac": true
+                },
+                "r": {
+                    "Chrome": "Reload your current page, ignoring cached content",
+                    "Mac": true
+                }
+            },
+            "arrowright": {
+                "Chrome": "Jump to the next open tab",
+                "Mac": true
+            },
+            "arrowleft": {
+                "Chrome": "Jump to the previous open tab",
+                "Mac": true
+            },
+            "arrowup": {
+                "Chrome": "Cycle focus to unfocused dialog (if showing) and all toolbars",
+                "Mac": true
+            },
+            "arrowdown": {
+                "Chrome": "Cycle focus to unfocused dialog (if showing) and all toolbars",
+                "Mac": true
+            },
+            "f": {
+                "Chrome": "Search the web",
+                "Mac": true
+            },
+            "b": {
+                "Chrome": "Open the Bookmark Manager",
+                "Mac": true
+            },
+            "i": {
+                "Chrome": "Open Developer Tools",
+                "Mac": true
+            },
+            "p": {
+                "Chrome": "Open the Page Setup dialog",
+                "Mac": true
+            },
+            "u": {
+                "Chrome": "Display non-editable HTML source code for the current page",
+                "Mac": true
+            },
+            "j": {
+                "Chrome": "Open the JavaScript Console",
+                "Mac": true
+            }
+        },
+        "Ctrl": {
+            "f": {
+                "Chrome": "Turn full-screen mode on or off",
+                "Mac": true
+            }
+        },
+        "+": {
+            "Chrome": "Make everything on the page bigger",
+            "Mac": true
+        },
+        "-": {
+            "Chrome": "Make everything on the page smaller",
+            "Mac": true
+        },
+        "0": {
+            "Chrome": "Return everything on the page to default size",
+            "Mac": true
+        },
+        "[": {
+            "Chrome": "Open the previous page in your browsing history for the current tab",
+            "Mac": true
+        },
+        "]": {
+            "Chrome": "Open the next page in your browsing history for the current tab",
+            "Mac": true
+        },
+        "arrowleft": {
+            "Chrome": "Open the previous page in your browsing history for the current tab",
+            "Mac": true
+        },
+        "arrowright": {
+            "Chrome": "Open the next page in your browsing history for the current tab",
+            "Mac": true
+        },
+        ",": {
+            "Chrome": "Open the Settings page in a new tab",
+            "Mac": true
+        },
+        "d": {
+            "Chrome": "Bookmark this page",
+            "Mac": true
+        },
+        "s": {
+            "Chrome": "Save Page",
+            "Mac": true
+        },
+        "o": {
+            "Chrome": "Open File",
+            "Mac": true
+        },
+        "p": {
+            "Chrome": "Print",
+            "Mac": true
+        },
+        "l": {
+            "Chrome": "Jump to the address bar",
+            "Mac": true
+        },
+        "f": {
+            "Chrome": "Find on Page",
+            "Mac": true
+        },
+        "g": {
+            "Chrome": "Jump to the next match to your Find Bar search",
+            "Mac": true
+        },
+        "e": {
+            "Chrome": "When Find Bar is open, search for selected text",
+            "Mac": true
+        },
+        "y": {
+            "Chrome": "Open the History page in a new tab",
+            "Mac": true
+        },
+        "m": {
+            "Chrome": "Minimize the window",
+            "Mac": true
+        },
+        "h": {
+            "Chrome": "Hide Google Chrome",
+            "Mac": true
+        },
+        "q": {
+            "Chrome": "Quit Google Chrome",
+            "Mac": true
+        },
+        "n": {
+            "Chrome": "Open a new window",
+            "Mac": true
+        },
+        "w": {
+            "Chrome": "Close the current tab or pop-up",
+            "Mac": true
+        },
+        "r": {
+            "Chrome": "Refresh",
+            "Mac": true
+        },
+        "t": {
+            "Chrome": "Open a new tab, and jump to it",
+            "Mac": true
+        },
+        "1": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "2": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "3": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "4": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "5": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "6": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "7": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "8": {
+            "Chrome": "Jump to a specific tab",
+            "Mac": true
+        },
+        "9": {
+            "Chrome": "Jump to last tab",
+            "Mac": true
+        },
+        "c": {
+            "Chrome": "Copy",
+            "Mac": true
+        },
+        "v": {
+            "Chrome": "Paste",
+            "Mac": true
+        },
+        "x": {
+            "Chrome": "Cut",
+            "Mac": true
+        },
+        "z": {
+            "Chrome": "Cancel last action",
+            "Mac": true
+        }
+    },
+    "Shift": {
+        "escape": {
+            "Chrome": "Open the Chrome Task Manager",
+            "Windows": true
+        }
+    },
+    "Ctrl": {
+        "Shift": {
+            "d": {
+                "Chrome": "Bookmark all tabs",
+                "Windows": true
+            },
+            "b": {
+                "Chrome": "Show or hide the Bookmarks bar",
+                "Windows": true
+            },
+            "g": {
+                "Chrome": "Jump to the previous match to your Find Bar search",
+                "Windows": true
+            },
+            "o": {
+                "Chrome": "Open the Bookmarks Manager",
+                "Windows": true
+            },
+            "n": {
+                "Chrome": "Open a new window in Incognito mode",
+                "Windows": true
+            },
+            "t": {
+                "Chrome": "Reopen previously closed tabs in the order they were closed",
+                "Windows": true
+            },
+            "w": {
+                "Chrome": "Close the current window",
+                "Windows": true,
+                "Mac": true
+            },
+            "j": {
+                "Chrome": "Open Developer Tools",
+                "Windows": true
+            },
+            "m": {
+                "Chrome": "Log in a different user or browse as a Guest",
+                "Windows": true
+            },
+            "tab": {
+                "Chrome": "Jump to the previous open tab"
+            },
+            "arrowright": {
+                "Chrome": "Move tabs right with keyboard focus",
+                "Windows": true
+            },
+            "arrowleft": {
+                "Chrome": "Move tabs left with keyboard focus",
+                "Windows": true
+            },
+            "delete": {
+                "Chrome": "Open the Clear Browsing Data options",
+                "Windows": true
+            }
+        },
+        "c": {
+            "Chrome": "Copy",
+            "Windows": true
+        },
+        "v": {
+            "Chrome": "Paste",
+            "Windows": true
+        },
+        "x": {
+            "Chrome": "Cut",
+            "Windows": true
+        },
+        "z": {
+            "Chrome": "Cancel last action",
+            "Windows": true
+        },
+        "+": {
+            "Chrome": "Make everything on the page bigger",
+            "Windows": true
+        },
+        "-": {
+            "Chrome": "Make everything on the page smaller",
+            "Windows": true
+        },
+        "0": {
+            "Chrome": "Return everything on the page to default size",
+            "Windows": true
+        },
+        "l": {
+            "Chrome": "Jump to the address bar",
+            "Windows": true
+        },
+        "n": {
+            "Chrome": "Open a new window",
+            "Windows": true
+        },
+        "t": {
+            "Chrome": "Open a new tab, and jump to it",
+            "Windows": true
+        },
+        "tab": {
+            "Chrome": "Jump to the next open tab"
+        },
+        "w": {
+            "Chrome": "Close the current tab",
+            "Windows": true,
+            "Mac": true
+        },
+        "h": {
+            "Chrome": "History",
+            "Windows": true
+        },
+        "j": {
+            "Chrome": "Downloads",
+            "Windows": true
+        },
+        "f": {
+            "Chrome": "Find on page",
+            "Windows": true
+        },
+        "k": {
+            "Chrome": "Search from anywhere on the page",
+            "Windows": true
+        },
+        "e": {
+            "Chrome": "Search from anywhere on the page",
+            "Windows": true
+        },
+        "u": {
+            "Chrome": "Display non-editable HTML source code for the current page",
+            "Windows": true
+        },
+        "g": {
+            "Chrome": "Jump to the next match to your Find Bar search",
+            "Windows": true
+        },
+        "s": {
+            "Chrome": "Save Page",
+            "Windows": true
+        },
+        "o": {
+            "Chrome": "Open File",
+            "Windows": true
+        },
+        "r": {
+            "Chrome": "Refresh",
+            "Windows": true
+        },
+        "p": {
+            "Chrome": "Print",
+            "Windows": true
+        },
+        "d": {
+            "Chrome": "Bookmark this page",
+            "Windows": true
+        },
+        "f5": {
+            "Chrome": "Move cursor to the address bar",
+            "Windows": true
+        },
+        "1": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "2": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "3": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "4": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "5": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "6": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "7": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "8": {
+            "Chrome": "Jump to a specific tab",
+            "Windows": true
+        },
+        "9": {
+            "Chrome": "Jump to the rightmost tab",
+            "Windows": true
+        }
+    },
+    "Alt": {
+        "Shift": {
+            "t": {
+                "Chrome": "Set focus on the first item in the Chrome toolbar",
+                "Windows": true
+            },
+            "i": {
+                "Chrome": "Open a feedback form",
+                "Windows": true
+            },
+            "a": {
+                "Chrome": "Focus on inactive dialogs",
+                "Windows": true
+            }
+        },
+        "home": {
+            "Chrome": "Open your home page in the current tab",
+            "Windows": true
+        },
+        "arrowleft": {
+            "Chrome": "Open the previous page from your browsing history in the current tab",
+            "Windows": true,
+            "Mac": "Move your cursor to the beginning of the previous word in a text field"
+        },
+        "arrowright": {
+            "Chrome": "Open the next page from your browsing history in the current tab",
+            "Windows": true,
+            "Mac": "Move your cursor to the back of the next word in a text field"
+        },
+        "d": {
+            "Chrome": "Jump to the address bar",
+            "Windows": true
+        },
+        "f": {
+            "Chrome": "Open the Chrome menu",
+            "Windows": true
+        },
+        "e": {
+            "Chrome": "Open the Chrome menu",
+            "Windows": true
+        },
+        "f6": {
+            "Chrome": "Skip to web contents",
+            "Windows": true
+        }
+    },
+    "f1": {
+        "Chrome": "Open the Chrome Help Center in a new tab",
+        "Windows": true
+    },
+    "f3": {
+        "Chrome": "Find on page",
+        "Windows": true
+    },
+    "f5": {
+        "Chrome": "Refresh",
+        "Windows": true
+    },
+    "f6": {
+        "Chrome": "Switch focus to unfocused dialog (if showing) and all toolbars / Jump to the address bar",
+        "Windows": true
+    },
+    "f7": {
+        "Chrome": "Turn on caret browsing",
+        "Windows": true,
+        "Mac": true
+    },
+    "f10": {
+        "Chrome": "Set focus on the rightmost item in the Chrome toolbar",
+        "Windows": true
+    },
+    "f11": {
+        "Chrome": "Full Screen View",
+        "Windows": true
+    },
+    "f12": {
+        "Chrome": "Open Developer Tools",
+        "Windows": true,
+        "Mac": true
+    }
+}

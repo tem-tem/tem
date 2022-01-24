@@ -1,16 +1,60 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+        Helvetica Neue, sans-serif;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.keys-presentation-container {
+    padding: 10px;
+}
+.keys-container {
+    display: flex;
+}
+.key-button {
+    font-size: 20px;
+    border: 1px solid #bbb;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #d7d7d7;
+    width: 80px;
+    height: 60px;
+    display: block;
+    text-align: center;
+    line-height: 55px;
+}
+.keys-container.available > .key-button {
+    border: 1px solid #009688;
+    background: #f5fdec;
+}
+
+.next-key {
+    display: flex;
+    opacity: 0.5;
+}
+
+.next-key > .key-button {
+    font-size: 10px;
+    /* width: 100%; */
+    height: 26px;
+    margin: 2px;
+    line-height: 21px;
+    width: 42px;
+    border-radius: 5px;
+    box-shadow: none;
+    border: 0.5px solid #cbcbcb;
+}
+
+.keystroke-description {
+    padding: 20px 0 20px 10px;
 }
