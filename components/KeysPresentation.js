@@ -35,8 +35,8 @@ const KeysPresentation = ({ pressedKey }) => {
     const getKeyDisplay = (key) => {
         if (key === 'arrowleft') return '←';
         if (key === 'arrowright') return '→';
-        if (key === 'arrowrup') return '↑';
-        if (key === 'arrowrdown') return '↓';
+        if (key === 'arrowup') return '↑';
+        if (key === 'arrowdown') return '↓';
         return key;
     };
 
