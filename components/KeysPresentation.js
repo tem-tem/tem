@@ -1,4 +1,14 @@
 import keystrokes from '../utils/keystrokes.json';
+import KeystrokeData from './KeystrokeData';
+import KeySuggestions from './KeySuggestions';
+
+export const getKeyDisplay = (key) => {
+    if (key === 'arrowleft') return '←';
+    if (key === 'arrowright') return '→';
+    if (key === 'arrowup') return '↑';
+    if (key === 'arrowdown') return '↓';
+    return key;
+};
 
 const KeysPresentation = ({ pressedKey }) => {
     const pressedKeys = [];
@@ -32,43 +42,6 @@ const KeysPresentation = ({ pressedKey }) => {
         availableKeystrokes?.Windows;
     const available = !isKeystroke && pressedKeys.length > 1 && done;
 
-    const getKeyDisplay = (key) => {
-        if (key === 'arrowleft') return '←';
-        if (key === 'arrowright') return '→';
-        if (key === 'arrowup') return '↑';
-        if (key === 'arrowdown') return '↓';
-        return key;
-    };
-
-    const getNextKeys = () => {
-        const availableKeystrokeKeys = Object.keys(availableKeystrokes || {});
-        const shift = pressedKeys.length * 80 + pressedKeys.length * 20;
-        return (
-            <div className="next-keys-container">
-                {availableKeystrokeKeys.map((key) => {
-                    return (
-                        <div className="next-key" key={`ak-${key}`} style={{ marginLeft: shift }}>
-                            <div className="key-button">{getKeyDisplay(key)}</div>
-                            {/* <div>{JSON.stringify(availableKeystrokes[key])}</div> */}
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    };
-
-    const getKeystrokeData = () => {
-        let os = availableKeystrokes?.Windows && 'Windows';
-        if (availableKeystrokes?.Mac) os = availableKeystrokes?.Mac && 'Mac';
-        return (
-            <div className="keystroke-description">
-                <div className="message">
-                    Chrome ({os}): {availableKeystrokes?.Chrome}
-                </div>
-            </div>
-        );
-    };
-
     const getAvailableMessage = () => {
         return (
             <div className="keystroke-description">
@@ -94,8 +67,10 @@ const KeysPresentation = ({ pressedKey }) => {
                         );
                     })}
             </div>
-            <div>{!isKeystroke && getNextKeys()}</div>
-            <div>{isKeystroke && getKeystrokeData()}</div>
+            <div>
+                {!isKeystroke && <KeySuggestions availableKeystrokes={availableKeystrokes} pressedKeys={pressedKeys} />}
+            </div>
+            <div>{isKeystroke && <KeystrokeData availableKeystrokes={availableKeystrokes} />}</div>
             <div>{!isKeystroke && available && getAvailableMessage()}</div>
         </div>
     );
