@@ -7,6 +7,7 @@ export const getKeyDisplay = (key) => {
     if (key === 'arrowright') return '→';
     if (key === 'arrowup') return '↑';
     if (key === 'arrowdown') return '↓';
+    if (key === 'Meta') return '⌘';
     return key;
 };
 
@@ -45,24 +46,22 @@ const KeysPresentation = ({ pressedKey }) => {
     const getAvailableMessage = () => {
         return (
             <div className="keystroke-description">
-                <div className="green-message">The keystroke is available.</div>
+                <div className="green-message">This shortcut is not reserved by major browsers.</div>
             </div>
         );
     };
 
     return (
         <div className="keys-presentation-container">
-            <div className="keystroke-description">
-                <div className="green-message">
-                    Press a keystroke to check its availability (currently only for chrome keystrokes).
-                </div>
+            <div className="keys-header">
+                <div className={`keys-header-message ${available && 'available'}`}>Check your shortcut</div>
             </div>
-            <div className={`keys-container ${available && 'available'}`}>
+            <div className={`keys-container`}>
                 {Object.keys(pressedKey || {})?.length !== 0 &&
                     pressedKeys.map((key) => {
                         return (
                             <span key={key} className="key-button">
-                                {getKeyDisplay(key)?.toLowerCase()}
+                                {getKeyDisplay(key)?.toUpperCase()}
                             </span>
                         );
                     })}

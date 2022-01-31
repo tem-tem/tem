@@ -40,6 +40,10 @@
             "d": {
                 "Chrome": "Bookmark all tabs",
                 "Mac": true
+            },
+            "c": {
+                "Chrome": "Select an element on the page to inspect it",
+                "Mac": true
             }
         },
         "Alt": {
@@ -132,6 +136,14 @@
             "Chrome": "Open the next page in your browsing history for the current tab",
             "Mac": true
         },
+        "arrowup": {
+            "Safari": "Scroll to the top-left corner of the page",
+            "Mac": true
+        },
+        "arrowdown": {
+            "Safari": "Scroll to the bottom-left corner of the page",
+            "Mac": true
+        },
         ",": {
             "Chrome": "Open the Settings page in a new tab",
             "Mac": true
@@ -150,14 +162,17 @@
         },
         "p": {
             "Chrome": "Print",
+            "Safari": "Print",
             "Mac": true
         },
         "l": {
             "Chrome": "Jump to the address bar",
+            "Safari": "Select the Smart Search field",
             "Mac": true
         },
         "f": {
             "Chrome": "Find on Page",
+            "Safari": "Find on Page",
             "Mac": true
         },
         "g": {
@@ -257,6 +272,10 @@
         "escape": {
             "Chrome": "Open the Chrome Task Manager",
             "Windows": true
+        },
+        " ": {
+            "Safari": "Scroll up a screen",
+            "Mac": true
         }
     },
     "Ctrl": {
