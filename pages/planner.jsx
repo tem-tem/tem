@@ -85,6 +85,8 @@ export default function Planner() {
         });
     };
 
+    let totalSum = 0;
+
     return (
         <div style={{ background: 'white' }}>
             <form name="balance" onSubmit={setNewBalance}>
@@ -142,12 +144,13 @@ export default function Planner() {
                         );
                     })}
                 </div>
-                <h3>All expenses</h3>
+                <h3>All expenses - {totalSum}</h3>
                 <pre>
                     {Object?.keys(db?.expenses || {})?.map((date) => {
                         const expenseIds = Object.keys(db?.expenses?.[date]);
                         return expenseIds.map((id) => {
                             const expense = db?.expenses?.[date][id];
+                            totalSum += expense?.amount;
                             return (
                                 <div key={'all-expense' + id}>
                                     <span>
