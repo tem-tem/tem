@@ -86,7 +86,7 @@ export default function Planner() {
     };
 
     return (
-        <div>
+        <div style={{ background: 'white' }}>
             <form name="balance" onSubmit={setNewBalance}>
                 <div>
                     <label htmlFor="balanceAmount">New Balance Amount</label>
