@@ -85,8 +85,6 @@ export default function Planner() {
         });
     };
 
-    let [totalSum, setTotalSum] = useState(0);
-
     return (
         <div style={{ background: 'white' }}>
             <form name="balance" onSubmit={setNewBalance}>
@@ -144,13 +142,14 @@ export default function Planner() {
                         );
                     })}
                 </div>
-                <h3>All expenses - {totalSum}</h3>
+                <h3>All expenses</h3>
                 <pre>
                     {Object?.keys(db?.expenses || {})?.map((date) => {
                         const expenseIds = Object.keys(db?.expenses?.[date]);
-                        return expenseIds.map((id) => {
+                        let total = 0;
+                        const expensesToRender = expenseIds.map((id) => {
                             const expense = db?.expenses?.[date][id];
-                            setTotalSum((s) => s + expense?.amount);
+                            total += expense?.amount;
                             return (
                                 <div key={'all-expense' + id}>
                                     <span>
@@ -159,6 +158,10 @@ export default function Planner() {
                                 </div>
                             );
                         });
+                        <div>
+                            <div>total = {total}</div>
+                            <div>{expensesToRender}</div>
+                        </div>;
                     })}
                 </pre>
             </div>
