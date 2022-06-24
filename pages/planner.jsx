@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { uuid as uuidv4 } from 'uuidv4';
-import Graph from '../src/components/planner/graph';
+import Graph from '../src/components/planner/Graph';
 import { sumExpenses } from '../src/helpers/plannerHelpers';
 // import * as uuidv4 from 'uuidv4';
 
