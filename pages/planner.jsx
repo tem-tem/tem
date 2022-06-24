@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { uuid as uuidv4 } from 'uuidv4';
+import Graph from '../src/components/planner/graph';
+import { sumExpenses } from '../src/helpers/plannerHelpers';
 // import * as uuidv4 from 'uuidv4';
 
 const DB_KEY = 'planner-db';
@@ -93,6 +95,7 @@ export default function Planner() {
                 <button type="submit">Set</button>
             </form>
             <div>Balance {balance}</div>
+            <Graph expenses={db?.expenses} balance={balance} />
             <h3>Date ({displayDate?.getDate()})</h3>
             <div>
                 <button onClick={handleDayChange(-1)}>prev</button>
@@ -156,10 +159,3 @@ const get = (key) => {
 };
 
 const set = (key, value) => window?.localStorage?.setItem(key, JSON.stringify(value));
-
-const sumExpenses = (expenses, date) => {
-    const expenseIds = Object?.keys(expenses?.[date] || {});
-    let sum = 0;
-    expenseIds?.map((id) => (sum += expenses?.[date][id]?.amount));
-    return sum;
-};

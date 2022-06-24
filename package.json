@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "chart.js": "3.8.0",
         "d3": "6.3.0",
         "lodash": "4.17.21",
         "next": "11.1.2",
