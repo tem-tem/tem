@@ -142,6 +142,22 @@ export default function Planner() {
                         );
                     })}
                 </div>
+                <h3>All expenses</h3>
+                <pre>
+                    {Object?.keys(db?.expenses || {})?.map((date) => {
+                        const expenseIds = Object.keys(db?.expenses?.[date]);
+                        return expenseIds.map((id) => {
+                            const expense = db?.expenses?.[date][id];
+                            return (
+                                <div key={'all-expense' + id}>
+                                    <span>
+                                        {expense?.amount} for {expense?.name} on {date}
+                                    </span>
+                                </div>
+                            );
+                        });
+                    })}
+                </pre>
             </div>
         </div>
     );
