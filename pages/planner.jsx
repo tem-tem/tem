@@ -85,6 +85,31 @@ export default function Planner() {
         });
     };
 
+    const renderAllExpenses = () => {
+        let total = 0;
+        const all = Object?.keys(db?.expenses || {})?.map((date) => {
+            const expenseIds = Object.keys(db?.expenses?.[date]);
+            return expenseIds.map((id) => {
+                const expense = db?.expenses?.[date][id];
+                total += expense?.amount;
+                return (
+                    <div key={'all-expense' + id}>
+                        <span>
+                            {expense?.amount} for {expense?.name} on {date}
+                        </span>
+                    </div>
+                );
+            });
+        });
+
+        return (
+            <div>
+                <div>Total = </div>
+                <div>{all}</div>
+            </div>
+        );
+    };
+
     return (
         <div style={{ background: 'white' }}>
             <form name="balance" onSubmit={setNewBalance}>
@@ -143,27 +168,7 @@ export default function Planner() {
                     })}
                 </div>
                 <h3>All expenses</h3>
-                <pre>
-                    {Object?.keys(db?.expenses || {})?.map((date) => {
-                        const expenseIds = Object.keys(db?.expenses?.[date]);
-                        let total = 0;
-                        const expensesToRender = expenseIds.map((id) => {
-                            const expense = db?.expenses?.[date][id];
-                            total += expense?.amount;
-                            return (
-                                <div key={'all-expense' + id}>
-                                    <span>
-                                        {expense?.amount} for {expense?.name} on {date}
-                                    </span>
-                                </div>
-                            );
-                        });
-                        <div>
-                            <div>total = {total}</div>
-                            <div>{expensesToRender}</div>
-                        </div>;
-                    })}
-                </pre>
+                <pre>{renderAllExpenses()}</pre>
             </div>
         </div>
     );
