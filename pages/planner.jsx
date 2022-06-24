@@ -104,7 +104,7 @@ export default function Planner() {
 
         return (
             <div>
-                <div>Total = </div>
+                <div>Total = {total}</div>
                 <div>{all}</div>
             </div>
         );
