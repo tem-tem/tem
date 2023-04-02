@@ -7,7 +7,15 @@ import useD3 from '../src/hooks/useD3';
 export default function Home() {
     const photos = [
         // 'https://d2w9rnfcy7mm78.cloudfront.net/17185727/original_e1300e1b2c3c999b2f85b0e67d40b251.jpg?1657649516?bc=0',
-        'https://d2w9rnfcy7mm78.cloudfront.net/17185808/original_4f8ddf4924c99595dc1b8883b5333993.jpg?1657649543?bc=0'
+        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185808/original_4f8ddf4924c99595dc1b8883b5333993.jpg?1657649543?bc=0',
+        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185742/original_80f0ef2fc7940a653113bb5ff48952c5.jpg?1657649522?bc=0',
+        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185746/original_c1f993f1237ab5015d9a7f52d12a1c6c.jpg?1657649525?bc=0',
+        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185773/original_3d7eb1d91f1192d0644ce1fdcc63ec1c.jpg?1657649532?bc=0',
+        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185776/original_8cfad8126b6fa0e29b698dc91b35ae96.jpg?1657649533?bc=0',
+        // 'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/VZJSBMRzIZ/original',
+        // 'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/NL57jquNw2/original',
+        // 'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/vwsEmv5VCE/original',
+        'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/uUIXvoU18S/original'
     ];
 
     function getRandomPhoto() {
@@ -25,7 +33,10 @@ export default function Home() {
     // useD3();
     return (
         <>
-            <div className={indexStyles.background} style={generateBackgroundStyle()}></div>
+            <div className="img-wrapper">
+                <img src={getRandomPhoto()} />
+            </div>
+            <div className={indexStyles.noise}></div>
             <section className={indexStyles.sectionWrapper}>
                 <h1>
                     <span className={indexStyles.textBG}>

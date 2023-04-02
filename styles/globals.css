@@ -19,6 +19,60 @@ h2 {
     font-size: 1.5rem;
 }
 
+
+:root {
+    --base: #85c0f8;
+    --bg-blend: multiply;
+    --blur: 20px;
+    --fg-blend: overlay;
+    --foreground: #9e9e9e;
+    --opacity: 1;
+    --spacing: 10%;
+  }
+  .img-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+    scale: 1.2;
+    top: 0;
+
+    background-color:    var(--base);
+    display:             flex;
+    flex:                1 1 100%;
+    height:              100%;
+    overflow:            hidden;
+    filter: blur(20px);
+    /* padding:             var(--spacing); */
+    /* position:            relative; */
+  }
+  
+  .img-wrapper img {
+    filter:              grayscale(100%) contrast(1) blur(var(--blur));
+    flex:                1 0 100%;
+    height:              100%;
+    max-width:           100%;
+    mix-blend-mode:      var(--bg-blend);
+    object-fit:          cover;
+    opacity:             var(--opacity);
+    position:            relative;
+    width:               100%;
+  }
+  
+  .img-wrapper::before {
+    background-color:    var(--foreground);
+    bottom:              0;
+    content:             '';
+    height:              100%;
+    left:                0;
+    mix-blend-mode:      var(--fg-blend);
+    position:            absolute;
+    right:               0;
+    top:                 0;
+    width:               100%;
+    z-index:             1;
+  }
+
 .keys-presentation-container {
     background: #707070;
 }
