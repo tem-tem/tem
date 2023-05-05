@@ -84,15 +84,15 @@ export default function Home() {
                     </h3>
                     <div className={indexStyles.projects}>
                         {
-                            projects.map(p => (
-                                <div className={indexStyles.project}>
+                            projects.map((p, i) => (
+                                <div className={indexStyles.project} key={i}>
                                     <div className={indexStyles.projectTitle}>
                                         <a rel="noreferrer" href={p.link}>{p.title}</a>
                                         <span>{p.description}</span>
                                     </div>
                                     <div className={indexStyles.projectMetadata}>
                                         <span className={indexStyles.projectTools}>
-                                            Tech stack: {p.tools.map(t => (<span>{t}</span>))}
+                                            Tech stack: {p.tools.map((t, i) => (<span key={i}>{t}</span>))}
                                         </span>
                                         <span className={indexStyles.projectPlatform}>
                                             Platform: <span>{p.platform}</span>
