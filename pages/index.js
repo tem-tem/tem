@@ -1,54 +1,66 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 import indexStyles from '../styles/index.module.css';
-import useD3 from '../src/hooks/useD3';
+
+const projects = [
+    {
+        title: "Default Shortcuts",
+        link: "https://defaultshortcuts.com",
+        description: "List of major browsers' default shortcuts.",
+        tools: [
+            "python",
+            "svelte",
+            "typescript"
+        ],
+        platform: "Web"
+    },
+    {
+        title: "Stop Working",
+        link: "https://apps.apple.com/us/app/stop-working-break-reminder/id6446755293?mt=12",
+        description: "Break reminder (pomodoro timer with good UI).",
+        tools: [
+            "swift",
+            "swiftui",
+            "appkit"
+        ],
+        platform: "MacOS"
+    },
+    {
+        title: "Gas",
+        link: "https://apps.apple.com/us/app/gas-eth-alerts/id6446234870",
+        description: "Ethereum gas price alerts.",
+        tools: [
+            "flask",
+            "redis",
+            "python",
+            "swift",
+            "swift ui"
+        ],
+        platform: "iOS"
+    },
+    {
+        title: "Logs",
+        link: "https://apps.apple.com/us/app/logs-pure-expense-tracker/id6445955890",
+        description: "Expense logger with rapid UX (works offline).",
+        tools: [
+            "swift",
+            "swift ui"
+        ],
+        platform: "iOS"
+    },
+]
+
 
 export default function Home() {
-    const photos = [
-        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185727/original_e1300e1b2c3c999b2f85b0e67d40b251.jpg?1657649516?bc=0',
-        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185808/original_4f8ddf4924c99595dc1b8883b5333993.jpg?1657649543?bc=0',
-        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185742/original_80f0ef2fc7940a653113bb5ff48952c5.jpg?1657649522?bc=0',
-        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185746/original_c1f993f1237ab5015d9a7f52d12a1c6c.jpg?1657649525?bc=0',
-        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185773/original_3d7eb1d91f1192d0644ce1fdcc63ec1c.jpg?1657649532?bc=0',
-        // 'https://d2w9rnfcy7mm78.cloudfront.net/17185776/original_8cfad8126b6fa0e29b698dc91b35ae96.jpg?1657649533?bc=0',
-        // 'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/VZJSBMRzIZ/original',
-        // 'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/NL57jquNw2/original',
-        // 'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/vwsEmv5VCE/original',
-        'https://xgjzloifyvgpbmyonaya.supabase.co/storage/v1/object/public/files/uUIXvoU18S/original'
-    ];
-
-    function getRandomPhoto() {
-        return photos[Math.floor(Math.random() * photos.length)];
-    }
-    function generateBackgroundStyle() {
-        const photo = getRandomPhoto();
-        return {
-            background: `url(${photo})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-        };
-    }
     // useD3();
     return (
         <>
-            <div className="img-wrapper">
-                <img src={getRandomPhoto()} />
-            </div>
-            <div className={indexStyles.noise}></div>
             <section className={indexStyles.sectionWrapper}>
                 <h1>
                     <span className={indexStyles.textBG}>
-                        tem ab - software engineer <a rel="noreferrer" href='https://twitter.com/bedrockcomputer' target='_blank'>@bedrockcomputer</a>
+                        Tem Ab - Software Engineer <a rel="noreferrer" href='https://twitter.com/bedrockcomputer' target='_blank'>@bedrockcomputer</a>
                     </span>
                 </h1>
+
                 <article>
-                    <h2>
-                        <span className={indexStyles.textBG}>
-                            links
-                        </span>
-                    </h2>
                     <ul>
                         <li>
                             
@@ -63,31 +75,40 @@ export default function Home() {
                         </li>
                     </ul>
                 </article>
+
                 <article>
-                    <h2>
-                    <span className={indexStyles.textBG}>
-                    side projects
-                    </span>
-                    </h2>
-                    <ul>
-                        <li>
-                    <span className={indexStyles.textBG}>
-                            <a rel="noreferrer" href='https://defaultshortcuts.com' target='_blank'>defaultshortcuts</a>  - browser default shortcuts look up
-                    </span>
-                        </li>
-                        <li>
-                    <span className={indexStyles.textBG}>
-                            <a rel="noreferrer" href='https://www.google.com/url?q=https%3A%2F%2Fapps.apple.com%2Fus%2Fapp%2Flogs-pure-expense-tracker%2Fid6445955890&sa=D&sntz=1&usg=AOvVaw2-V019ktERWM_I6klZQVbP' target='_blank'>logs</a> - expense logger for ios
-                    </span>
-                        </li>
-                        <li>
-                    <span className={indexStyles.textBG}>
-                            <a rel="noreferrer" href='https://apps.apple.com/us/app/stop-working-back-hurts/id6446755293?mt=12' target='_blank'>stop working</a> - pomodoro timer for mac
-                    </span>
-                        </li>
-                    </ul>
+                    <h3>
+                        <span className={indexStyles.textBG}>
+                            Projects
+                        </span>
+                    </h3>
+                    <div className={indexStyles.projects}>
+                        {
+                            projects.map(p => (
+                                <div className={indexStyles.project}>
+                                    <div className={indexStyles.projectTitle}>
+                                        <a rel="noreferrer" href={p.link}>{p.title}</a>
+                                        <span>{p.description}</span>
+                                    </div>
+                                    <div className={indexStyles.projectMetadata}>
+                                        <span className={indexStyles.projectTools}>
+                                            Tech stack: {p.tools.map(t => (<span>{t}</span>))}
+                                        </span>
+                                        <span className={indexStyles.projectPlatform}>
+                                            Platform: <span>{p.platform}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            ))
+                        }
+
+                    </div>
                 </article>
-                <article>
+
+
+
+
+                {/* <article>
                     <h3>
                     <span className={indexStyles.textBG}>
                     other
@@ -105,7 +126,7 @@ export default function Home() {
                     </span>
                         </li>
                     </ul>
-                </article>
+                </article> */}
                 
             </section>
         </>

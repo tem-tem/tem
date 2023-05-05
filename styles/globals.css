@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-html,
 body {
-    background: #e3e3e3;
-    padding: 0;
-    margin: 0;
-    font-family: monospace;
+    --bg: hsl(204, 21%, 91%);
+    --dot: hsl(213, 41%, 67%);
+
+    background: linear-gradient(90deg, var(--bg) 21px, transparent 1%) center, linear-gradient(var(--bg) 21px, transparent 1%) center, var(--dot);
+    background-size: 22px 22px;
+    font-family: 'SF Pro', serif;
 }
 
 * {
