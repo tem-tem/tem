@@ -3,10 +3,35 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap"
+			rel="stylesheet"
+		/>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<style>
+			/* :root {
+				--bg-color: #d0d0d0;
+				--accent-color: rgb(23 254 144);
+			}
+			body {
+				font-family: 'Raleway', SF Pro Display, sans-serif;
+				font-display: swap;
+				font-weight: 100;
+				font-size: 1.5rem;
+
+				background-color: var(--bg-color);
+			} */
+			* {
+				box-sizing: border-box;
+			}
+		</style>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
+		<main style="display: contents">%sveltekit.body%</main>
 	</body>
+	<footer class="h-24">
+	</footer>
 </html>

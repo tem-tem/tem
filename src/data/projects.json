@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Bedrock",
+        "link": "https://www.bedrock.computer/base",
+        "description": "Bedrock",
+        "tools": [
+            "HTML", "CSS", "React", "Typescript", "Next.JS", "S3", "Route 53", "Hasura", "GraphQL", "PostgreSQL", "Docker", "Kubernetes", "Electron", "Redux"
+        ],
+        "platform": ["Web", "Desktop"],
+        "image": "bedrock.png"
+    },
+    {
+        "name": "Default Shortcuts",
+        "link": "https://www.defaultshortcuts.com",
+        "description": "Default Shortcuts is a website that lists all the default shortcuts of all major applications, operating systems and web apps.",
+        "tools": [
+            "HTML", "CSS", "Svelte", "Python", "Vercel", "Typescript"
+        ],
+        "platform": ["Web"],
+        "image": "defaultshortcuts.png"
+    },
+    {
+        "name": "Stop Working",
+        "link": "https://apps.apple.com/us/app/stop-working-break-reminder/id6446755293?mt=12",
+        "description": "Break reminder (pomodoro timer with good UI).",
+        "tools": [
+            "Swift", "SwiftUI", "Xcode"
+        ],
+        "platform": ["MacOS"],
+        "image": "stopworking.png"
+    },
+    {
+        "name": "Gas",
+        "link": "https://apps.apple.com/us/app/gas-eth-alerts/id6446234870",
+        "description": "Ethereum gas price alerts.",
+        "tools": [
+            "Swift", "SwiftUI", "Xcode", "Golang", "SQLite", "Redis", "AWS Timestream", "Javascript", "TMUX", "Firebase Analytics"
+        ],
+        "platform": ["iOS"],
+        "image": "gas.png"
+    },
+    {
+        "name": "Ease",
+        "link": "https://apps.apple.com/us/app/logs-pure-expense-tracker/id6445955890",
+        "description": "Manual expense tracker for quick logging.",
+        "tools": [
+            "Swift", "SwiftUI", "Xcode", "Firebase Analytics"
+        ],
+        "platform": ["iOS"],
+        "image": "ease.png"
+    }
+]
