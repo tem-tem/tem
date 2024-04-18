@@ -6,7 +6,7 @@
 	<div class="md:col-span-3 sm:col-span-2 col-span-1">
 	</div>
 	<div class="md:col-span-3 sm:col-span-2 col-span-1 pb-4">
-		<h1 class="text-4xl mb-4">Tem</h1>
+		<h1 class="text-4xl mb-4">tem</h1>
 		<a href="x.com/@tem_dev" class="underline decoration-1 hover:text-blue-600 underline-offset-8">@tem_dev</a>
 		<div class="text-base opacity-75 mt-4">Software Developer based in Chicago, IL</div>
 	</div>
