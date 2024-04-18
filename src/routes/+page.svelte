@@ -1,20 +1,7 @@
 <script>
-	// import Icon from "../components/Icon.svelte";
-
 	import ProjectItem from '../components/ProjectItem.svelte';
-
-	// import Menu from "../components/Menu.svelte";
-	// import Scroller from "../components/Scroller.svelte";
 </script>
 
-<!-- <h1>Projects</h1> -->
-<!-- <Menu /> -->
-<!-- <Icon src="https://svelte.dev/favicon.png" name="Svelte" /> -->
-
-<!-- <Scroller /> -->
-
-<!-- <header class="flex flex-col items-start gap-2 font-serif">
-</header> -->
 <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 space-y-8 space-x-4 font-serif text-lg">
 	<div class="md:col-span-3 sm:col-span-2 col-span-1">
 	</div>
