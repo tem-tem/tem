@@ -38,13 +38,6 @@
 			tags: ['react', 'typescript', 'nextjs', 'tailwind css', 'threejs']
 		},
 		{
-			name: 'Default Shortcuts',
-			description: 'A collection of default keyboard shortcuts for popular applications.',
-			icon: 'https://defaultshortcuts.com/icon.png',
-			href: 'https://defaultshortcuts.com',
-			tags: ['react', 'nextjs', 'tailwind css', 'ngnix', 'pm2']
-		},
-		{
 			name: 'Infinite Filter',
 			description: 'A UI component for React.',
 			icon: 'https://avatars.githubusercontent.com/u/18738841?s=48&v=4',
