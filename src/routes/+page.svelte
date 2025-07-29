@@ -79,7 +79,6 @@
 			description={project.description}
 			icon={project.icon}
 			href={project.href}
-			tags={project.tags}
 		/>
 	{/each}
 	<div />
@@ -91,7 +90,6 @@
 				description={project.description}
 				icon={project.icon}
 				href={project.href}
-				tags={project.tags}
 			/>
 		{/each}
 	</div>

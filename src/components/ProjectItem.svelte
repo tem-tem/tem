@@ -3,7 +3,6 @@
     export let description: string;
     export let icon: string;
     export let href: string;
-    export let tags: string[] = [];
 </script>
 
 <div class="flex flex-col justify-start group">
