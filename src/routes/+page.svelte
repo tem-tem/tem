@@ -10,18 +10,25 @@
 			tags: ['swift', 'ios', 'ethers.js', 'aws timestream', 'nodejs', 'sql', 'go', 'caching', 'redis']
 		},
 		{
+			name: 'Ease',
+			description: 'Manual Expense Tracker.',
+			icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5b/d6/ca/5bd6cad8-5938-b125-3889-13283aa153bc/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/230x0w.webp',
+			href: 'https://apps.apple.com/us/app/ease-expense-tracker/id6445955890',
+			tags: ['swift', 'ios', 'core data']
+		},
+		{
+			name: 'Walk Flower',
+			description: 'Pedometer with flowers.',
+			icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4b/2a/1d/4b2a1d53-cafe-aced-7157-c0f8932c73e7/AppIcon-0-0-1x_U007ephone-0-0-0-1-0-85-220.png/230x0w.webp',
+			href: 'https://apps.apple.com/us/app/walk-flower/id6532313329',
+			tags: ['swift', 'ios', 'core data']
+		},
+		{
 			name: 'Stop Working',
 			description: 'A break reminder for macOS.',
 			icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/90/ef/19/90ef1971-e7a0-8b46-4065-a2dcb3284298/AppIcon-85-220-4-2x.png/460x0w.webp',
 			href: 'https://apps.apple.com/us/app/stop-working-break-reminder/id6446755293',
 			tags: ['swift', 'macos']
-		},
-		{
-			name: 'Ease',
-			description: 'iOS Expense Tracker.',
-			icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9c/8e/5d/9c8e5ddd-c371-8ff2-4f98-c87cdfbd935b/AppIcon-0-0-1x_U007ephone-0-85-220.png/460x0w.webp',
-			href: 'https://apps.apple.com/us/app/ease-expense-tracker/id6445955890',
-			tags: ['swift', 'ios', 'core data']
 		},
 		{
 			name: 'Twitter Schedule Shortcut',
@@ -57,15 +64,15 @@
 	];
 </script>
 
-<div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 space-y-8 space-x-4 font-garamond">
-	<div class="md:col-span-3 sm:col-span-2 col-span-1">
+<div class="grid grid-cols-1 space-y-8 space-x-4 font-garamond">
+	<div class="col-span-1">
 	</div>
-	<div class="md:col-span-3 sm:col-span-2 col-span-1 pt-10">
+	<div class="col-span-1 pt-10 flex gap-2">
 		<h1 class="">Tem - Software Developer based in Chicago, IL</h1>
-		<a href="https://x.com/@tem_dev" class="opacity-75 underline decoration-1 hover:text-blue-600 underline-offset-8">@tem_dev</a>
+		<a href="https://x.com/@tem_dev" class="opacity-75 hover:text-blue-600 underline-offset-8">@tem_dev</a>
 	</div>
 	
-	<h2 class="md:col-span-3 sm:col-span-2 col-span-1 pb-10 pt-12 text-2xl">Projects</h2>
+	<h2 class="col-span-1 pb-10 pt-12 text-2xl">Projects</h2>
 	{#each projects as project}
 		<ProjectItem
 			name={project.name}
@@ -76,8 +83,8 @@
 		/>
 	{/each}
 	<div />
-	<h2 class="md:col-span-3 sm:col-span-2 col-span-1 text-2xl pt-12 pb-8">Past Projects</h2>
-	<div class="flex flex-col justify-center gap-4">
+	<h2 class="col-span-1 text-2xl pt-12 pb-8">Past Projects</h2>
+	<div class="flex flex-col justify-center gap-1">
 		{#each pastProjects as project}
 			<ProjectItem
 				name={project.name}
