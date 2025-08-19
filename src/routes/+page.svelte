@@ -3,6 +3,13 @@
 
 	let projects = [
 		{
+			name: 'Timezones',
+			description: 'Intuitive timezone viewer.',
+			icon: 'https://time.tem.dev/favicon.png',
+			href: 'https://time.tem.dev',
+			tags: ['svelte']
+		},
+		{
 			name: 'Gas Alert',
 			description: 'iOS App for tracking fees in crypto.',
 			icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8d/33/42/8d334268-6144-89c9-ddf1-2732fa63dd7d/AppIcon-0-0-1x_U007ephone-0-85-220.png/460x0w.webp',
@@ -53,26 +60,34 @@
 		},
 	]
 
-	let pastProjects = [
+	let work = [
 		{
 			name: 'Bedrock',
 			description: 'Supercharged multiplayer workspace.',
-			icon: 'https://www.bedrock.computer/favicon.ico',
+			icon: 'https://bedrock.computer/favicon.ico',
 			href: 'https://www.bedrock.computer/',
 			tags: ['react', 'redux', 'typescript', 'nodejs', 'electron', 'websockets', 'kubernetes', 'docker', 'postgresql', 'graphql', 'ec2', 'route53', 's3', 'sentry']
+		},
+		{
+			name: 'HeyDiabetes',
+			description: 'Diabetes management app.',
+			icon: 'https://www.heydiabetes.com/favicon.ico',
+			href: 'https://www.heydiabetes.com/',
+			tags: ['react', 'typescript', 'nodejs', 'electron', 'websockets', 'kubernetes', 'docker', 'postgresql', 'graphql', 'ec2', 'route53', 's3', 'sentry']
 		}
 	];
 </script>
 
-<div class="grid grid-cols-1 space-y-8 space-x-4 font-garamond">
+<div class="grid grid-cols-1 space-y-4 space-x-4 font-serif">
 	<div class="col-span-1">
 	</div>
-	<div class="col-span-1 pt-10 flex gap-2">
+	<div class="col-span-1 pt-10 flex gap-2 text-2xl">
 		<h1 class="">Tem - Software Developer based in Chicago, IL</h1>
 		<a href="https://x.com/@tem_dev" class="opacity-75 hover:text-blue-600 underline-offset-8">@tem_dev</a>
 	</div>
 	
-	<h2 class="col-span-1 pb-10 pt-12 text-2xl">Projects</h2>
+	<div class="col-span-1 pb-4 pt-12 text-2xl">Projects</div>
+	<div class="flex flex-col justify-center gap-4 font-mono">
 	{#each projects as project}
 		<ProjectItem
 			name={project.name}
@@ -81,10 +96,10 @@
 			href={project.href}
 		/>
 	{/each}
-	<div />
-	<h2 class="col-span-1 text-2xl pt-12 pb-8">Past Projects</h2>
-	<div class="flex flex-col justify-center gap-1">
-		{#each pastProjects as project}
+	</div>
+	<h2 class="col-span-1 text-2xl pt-12 pb-4">Work</h2>
+	<div class="flex flex-col justify-center gap-4 font-mono">
+		{#each work as project}
 			<ProjectItem
 				name={project.name}
 				description={project.description}

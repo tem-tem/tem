@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         'garamond': ['New York', 'serif'],
+        'serif': ['Instrument Serif', 'serif'],
       }
     },
   },

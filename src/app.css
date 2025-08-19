@@ -1,3 +1,26 @@
+/* @import url('/static/fonts/InstrumentSerif-Italic.ttf');
+@import url('/static/fonts/InstrumentSerif-Regular.ttf'); */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+	font-family: 'Instrument Serif';
+	src: url('/fonts/InstrumentSerif-Italic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Instrument Serif';
+	src: url('/fonts/InstrumentSerif-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@theme {
+  --font-serif: 'Instrument Serif', serif;
+  --font-serif-italic: 'Instrument Serif', serif;
+}
