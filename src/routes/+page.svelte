@@ -83,7 +83,7 @@
 	</div>
 	<div class="col-span-1 pt-10 flex gap-2 text-2xl">
 		<h1 class="">Tem - Software Developer based in Chicago, IL</h1>
-		<a href="https://x.com/@tem_dev" class="opacity-75 hover:text-blue-600 underline-offset-8">@tem_dev</a>
+		<!-- <a href="https://x.com/@tem_dev" class="opacity-75 hover:text-blue-600 underline-offset-8">@tem_dev</a> -->
 	</div>
 	
 	<div class="col-span-1 pb-4 pt-12 text-2xl">Projects</div>
