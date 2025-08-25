@@ -19,10 +19,4 @@
             {description}
         </span>
     </p>
-
-    <!-- <div class="text-xs font-thin opacity-50">
-        {#each tags as tag}
-            <div class="inline-block text-sm rounded m-1 ml-0">{tag}</div>{' '}
-        {/each}
-    </div> -->
 </div>
