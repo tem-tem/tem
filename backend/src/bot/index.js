@@ -135,10 +135,10 @@ bot.onText(/\/profile/, async (msg) => {
     userStates.set(chatId, { action: 'profile', step: 'select' });
     
     const profileMessage = `👤 *Current Profile Settings:*\n\n` +
-                          `**Name:** ${profile.name}\n` +
-                          `**Intro:** ${profile.intro}\n` +
-                          `**Twitter URL:** ${profile.twitter_url}\n` +
-                          `**Twitter Label:** ${profile.twitter_label}\n\n` +
+                          `*Name:* ${profile.name}\n` +
+                          `*Intro:* ${profile.intro}\n` +
+                          `*Twitter URL:* ${profile.twitter_url}\n` +
+                          `*Twitter Label:* ${profile.twitter_label}\n\n` +
                           `What would you like to edit?`;
     
     const options = [
