@@ -5,9 +5,20 @@ import Profile from '../models/Profile.js';
 
 dotenv.config();
 
+const logger = {
+  _fmt: (level, msg, extra) => {
+    const ts = new Date().toISOString();
+    const base = `[${ts}] [${level}] ${msg}`;
+    return extra ? `${base} ${JSON.stringify(extra)}` : base;
+  },
+  info:  (msg, extra) => console.log(logger._fmt('INFO ', msg, extra)),
+  warn:  (msg, extra) => console.warn(logger._fmt('WARN ', msg, extra)),
+  error: (msg, extra) => console.error(logger._fmt('ERROR', msg, extra)),
+};
+
 const token = process.env.TELEGRAM_BOT_TOKEN;
 if (!token) {
-  console.error('TELEGRAM_BOT_TOKEN environment variable is required');
+  logger.error('TELEGRAM_BOT_TOKEN environment variable is required');
   process.exit(1);
 }
 
@@ -62,7 +73,7 @@ const showProjects = async (chatId, status = null) => {
     const message = projects.map(formatProject).join('\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n');
     bot.sendMessage(chatId, message, { parse_mode: 'Markdown', disable_web_page_preview: true });
   } catch (error) {
-    console.error('Error fetching projects:', error);
+    logger.error('Error fetching projects', { chatId, message: error.message });
     bot.sendMessage(chatId, '❌ Error fetching projects. Please try again.');
   }
 };
@@ -70,6 +81,7 @@ const showProjects = async (chatId, status = null) => {
 // Command handlers
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/start', { chatId, username: msg.from?.username });
   const welcomeMessage = `
 🚀 *Welcome to Tem's Project Manager Bot!*
 
@@ -91,6 +103,7 @@ Get started by typing /list to see your current projects!
 
 bot.onText(/\/help/, (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/help', { chatId, username: msg.from?.username });
   const helpMessage = commands
     .map(cmd => `/${cmd.command} - ${cmd.description}`)
     .join('\n');
@@ -100,38 +113,45 @@ bot.onText(/\/help/, (msg) => {
 
 bot.onText(/\/list/, (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/list', { chatId, username: msg.from?.username });
   showProjects(chatId);
 });
 
 bot.onText(/\/add/, (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/add', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'add', step: 'name' });
   bot.sendMessage(chatId, '📱 *Adding new project*\n\nPlease enter the project name:', { parse_mode: 'Markdown' });
 });
 
 bot.onText(/\/edit/, (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/edit', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'edit', step: 'select' });
   bot.sendMessage(chatId, '✏️ *Edit project*\n\nPlease enter the project ID you want to edit:', { parse_mode: 'Markdown' });
 });
 
 bot.onText(/\/status/, (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/status', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'status', step: 'select' });
   bot.sendMessage(chatId, '📊 *Change project status*\n\nPlease enter the project ID:', { parse_mode: 'Markdown' });
 });
 
 bot.onText(/\/delete/, (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/delete', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'delete', step: 'select' });
   bot.sendMessage(chatId, '🗑️ *Delete project*\n\nPlease enter the project ID you want to delete:', { parse_mode: 'Markdown' });
 });
 
 bot.onText(/\/profile/, async (msg) => {
   const chatId = msg.chat.id;
+  logger.info('/profile', { chatId, username: msg.from?.username });
   
   try {
     const profile = await profileModel.getProfile();
+    logger.info('/profile fetched successfully', { chatId });
     userStates.set(chatId, { action: 'profile', step: 'select' });
     
     // Escape Markdown special characters in user-controlled values so the
@@ -160,7 +180,7 @@ bot.onText(/\/profile/, async (msg) => {
       }
     });
   } catch (error) {
-    console.error('Error in /profile command:', error);
+    logger.error('Error in /profile command', { chatId, message: error.message, stack: error.stack });
     bot.sendMessage(chatId, '❌ Error fetching profile. Please try again.');
   }
 });
@@ -173,6 +193,8 @@ bot.on('message', async (msg) => {
   const state = userStates.get(chatId);
   
   if (!state) return;
+
+  logger.info('message', { chatId, action: state.action, step: state.step, text: msg.text });
 
   try {
     if (state.action === 'add') {
@@ -187,7 +209,7 @@ bot.on('message', async (msg) => {
       await handleProfileEdit(chatId, msg.text, state);
     }
   } catch (error) {
-    console.error('Error handling message:', error);
+    logger.error('Error handling message', { chatId, action: state.action, step: state.step, message: error.message, stack: error.stack });
     bot.sendMessage(chatId, '❌ An error occurred. Please try again.');
     userStates.delete(chatId);
   }
@@ -453,14 +475,14 @@ const handleProfileEdit = async (chatId, text, state) => {
         }
       });
     } catch (error) {
-      console.error('Error updating profile setting:', error);
+      logger.error('Error updating profile setting', { chatId, field: state.field, message: error.message, stack: error.stack });
       bot.sendMessage(chatId, '❌ Error updating setting. Please try again.');
       userStates.delete(chatId);
     }
   }
 };
 
-console.log('🤖 Telegram bot started successfully!');
-console.log('Bot username: @' + (await bot.getMe()).username);
+logger.info('Telegram bot started successfully');
+logger.info('Bot username: @' + (await bot.getMe()).username);
 
 export default bot;
