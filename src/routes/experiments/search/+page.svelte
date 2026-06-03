@@ -31,9 +31,10 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							class="app"
-						>— {result.appName}</a>
-					</span>
+						>app: {result.appName}</a>
 					<span class="chip">{(result.score * 100).toFixed(1)}%</span>
+					</span>
+
 				</div>
 			{/each}
 		</div>
@@ -65,8 +66,8 @@
 		font-size: 14px;
 		font-family: monospace;
 		border: 1px solid #d1d5db;
-		border-radius: 8px;
-		background: #f9fafb;
+		border-radius: 0px;
+		background: #ffffff12;
 		outline: none;
 		transition: border-color 0.15s, background 0.15s;
 	}
@@ -83,7 +84,7 @@
 		background: #111827;
 		color: #fff;
 		border: none;
-		border-radius: 8px;
+		border-radius: 0px;
 		cursor: pointer;
 		transition: background 0.15s;
 	}
@@ -95,18 +96,21 @@
 	.results {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 20px;
+		padding-left: 14px;
 	}
 
 	.result {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 16px;
+		align-items: baseline;
+		gap: 10px;
+		flex-wrap: wrap;
 	}
 
 	.title {
 		font-size: 14px;
+		flex: 1;
+		min-width: 0;
 	}
 
 	.clip-link {
