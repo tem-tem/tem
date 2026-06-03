@@ -19,9 +19,15 @@ if [ ! -f backend/.env ]; then
     exit 1
 fi
 
-# Load environment variables
-export $(cat .env | xargs)
-export $(cat backend/.env | xargs)
+# Pin Docker client API version to match the server's maximum supported version
+export DOCKER_API_VERSION=1.43
+
+# Load environment variables (skip blank lines and comments)
+set -a
+# shellcheck disable=SC1090
+source <(grep -v '^\s*#' .env | grep -v '^\s*$')
+source <(grep -v '^\s*#' backend/.env | grep -v '^\s*$')
+set +a
 
 echo "🔍 Environment loaded"
 
