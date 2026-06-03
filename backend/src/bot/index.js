@@ -134,11 +134,15 @@ bot.onText(/\/profile/, async (msg) => {
     const profile = await profileModel.getProfile();
     userStates.set(chatId, { action: 'profile', step: 'select' });
     
+    // Escape Markdown special characters in user-controlled values so the
+    // message doesn't fail to parse (e.g. underscores in URLs).
+    const esc = (s) => String(s).replace(/[_*`\[]/g, '\\$&');
+
     const profileMessage = `👤 *Current Profile Settings:*\n\n` +
-                          `*Name:* ${profile.name}\n` +
-                          `*Intro:* ${profile.intro}\n` +
-                          `*Twitter URL:* ${profile.twitter_url}\n` +
-                          `*Twitter Label:* ${profile.twitter_label}\n\n` +
+                          `*Name:* ${esc(profile.name)}\n` +
+                          `*Intro:* ${esc(profile.intro)}\n` +
+                          `*Twitter URL:* ${esc(profile.twitter_url)}\n` +
+                          `*Twitter Label:* ${esc(profile.twitter_label)}\n\n` +
                           `What would you like to edit?`;
     
     const options = [
@@ -147,7 +151,7 @@ bot.onText(/\/profile/, async (msg) => {
       ['done']
     ];
     
-    bot.sendMessage(chatId, profileMessage, {
+    await bot.sendMessage(chatId, profileMessage, {
       parse_mode: 'Markdown',
       reply_markup: {
         keyboard: options,
@@ -156,7 +160,7 @@ bot.onText(/\/profile/, async (msg) => {
       }
     });
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    console.error('Error in /profile command:', error);
     bot.sendMessage(chatId, '❌ Error fetching profile. Please try again.');
   }
 });
