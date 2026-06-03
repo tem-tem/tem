@@ -1,3 +1,9 @@
+docker
+
+docker-compose -f docker-compose.prod.yml restart backend
+
+
+
 # Tem's Portfolio
 
 A dynamic portfolio website with a backend API and Telegram bot for managing projects.
