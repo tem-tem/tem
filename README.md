@@ -2,7 +2,7 @@ docker
 
 docker-compose -f docker-compose.prod.yml restart backend
 
-
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml up -d --build telegram-bot
 
 # Tem's Portfolio
 

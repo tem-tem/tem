@@ -1,4 +1,4 @@
-import type { Project, Profile } from '../app.d.ts';
+import type { Project, Profile } from '../app';
 import { API_BASE_URL } from '$env/static/private';
 
 interface PageResponse {
