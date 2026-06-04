@@ -169,6 +169,14 @@ const executeTool = async (name, args) => {
   }
 };
 
+const GEMINI_CONFIG = {
+  tools: geminiTools,
+  systemInstruction: `You are a portfolio project manager assistant. You help manage portfolio projects and profile settings via a Telegram bot.
+Use the provided tools to read and write data. Be concise and friendly in responses.
+When creating or updating, confirm what was done. When listing, format nicely.
+Valid project statuses: current, wip, in_review, completed, archived, cancelled.`,
+};
+
 const handleGeminiMessage = async (chatId, text) => {
   const history = chatHistories.get(chatId) || [];
 
@@ -177,15 +185,7 @@ const handleGeminiMessage = async (chatId, text) => {
   let response = await genai.models.generateContent({
     model: GEMINI_MODEL,
     contents: history,
-    tools: geminiTools,
-    systemInstruction: {
-      parts: [{
-        text: `You are a portfolio project manager assistant. You help manage portfolio projects and profile settings via a Telegram bot. 
-Use the provided tools to read and write data. Be concise and friendly in responses. 
-When creating or updating, confirm what was done. When listing, format nicely.
-Valid project statuses: current, wip, in_review, completed, archived, cancelled.`,
-      }],
-    },
+    config: GEMINI_CONFIG,
   });
 
   // Agentic loop: keep executing tool calls until the model produces a text response
@@ -210,15 +210,7 @@ Valid project statuses: current, wip, in_review, completed, archived, cancelled.
     response = await genai.models.generateContent({
       model: GEMINI_MODEL,
       contents: history,
-      tools: geminiTools,
-      systemInstruction: {
-        parts: [{
-          text: `You are a portfolio project manager assistant. You help manage portfolio projects and profile settings via a Telegram bot. 
-Use the provided tools to read and write data. Be concise and friendly in responses. 
-When creating or updating, confirm what was done. When listing, format nicely.
-Valid project statuses: current, wip, in_review, completed, archived, cancelled.`,
-        }],
-      },
+      config: GEMINI_CONFIG,
     });
   }
 
