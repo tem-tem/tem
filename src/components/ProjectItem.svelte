@@ -19,6 +19,9 @@
             <span class="ml-1">
                 {description}
             </span>
+            {#if status}
+            <span class="ml-1 opacity-50">({status})</span>
+            {/if}
         </a>
     </p>
 </div>

@@ -26,7 +26,7 @@ class Project {
       FROM projects p
       LEFT JOIN project_tags pt ON p.id = pt.project_id
       GROUP BY p.id
-      ORDER BY p.created_at DESC
+      ORDER BY p.display_order ASC NULLS LAST, p.created_at DESC
     `;
     
     const result = await this.pool.query(query);
@@ -129,6 +129,10 @@ class Project {
         fields.push(`status = $${paramCount++}`);
         values.push(updates.status);
       }
+      if (updates.display_order !== undefined) {
+        fields.push(`display_order = $${paramCount++}`);
+        values.push(updates.display_order);
+      }
       
       fields.push(`updated_at = $${paramCount++}`);
       values.push(new Date());
@@ -193,7 +197,7 @@ class Project {
       LEFT JOIN project_tags pt ON p.id = pt.project_id
       WHERE p.status = $1
       GROUP BY p.id
-      ORDER BY p.created_at DESC
+      ORDER BY p.display_order ASC NULLS LAST, p.created_at DESC
     `;
     
     const result = await this.pool.query(query, [status]);

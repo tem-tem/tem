@@ -18,7 +18,7 @@ export const load = async ({ fetch }): Promise<PageResponse> => {
     let projects: Project[] = [];
     if (projectsResponse.ok) {
       const projectsData = await projectsResponse.json();
-      projects = (projectsData as Project[]).filter(project => project.status === 'current');
+      projects = projectsData as Project[];
     } else {
       console.error('Failed to fetch projects:', projectsResponse.status, projectsResponse.statusText);
       // Fallback projects data

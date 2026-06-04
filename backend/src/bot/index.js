@@ -34,6 +34,7 @@ const commands = [
   { command: 'edit', description: 'Edit an existing project' },
   { command: 'status', description: 'Change project status' },
   { command: 'delete', description: 'Delete a project' },
+  { command: 'order', description: 'Set display order for a project' },
   { command: 'profile', description: 'Edit profile settings (name, intro, links)' },
   { command: 'help', description: 'Show this help message' }
 ];
@@ -47,11 +48,13 @@ const userStates = new Map();
 // Helper functions
 const formatProject = (project) => {
   const tags = Array.isArray(project.tags) ? project.tags.join(', ') : 'No tags';
+  const order = project.display_order != null ? project.display_order : '—';
   return `📱 *${project.name}*\n` +
          `📝 ${project.description}\n` +
          `🔗 [Link](${project.href})\n` +
          `🏷️ Tags: ${tags}\n` +
          `📊 Status: ${project.status}\n` +
+         `🔢 Order: ${order}\n` +
          `🆔 ID: ${project.id}`;
 };
 
@@ -91,6 +94,7 @@ I can help you manage your portfolio projects. Here are the available commands:
 /add - Add a new project
 /edit - Edit an existing project
 /status - Change project status
+/order - Set display order for a project
 /delete - Delete a project
 /profile - Edit profile settings
 /help - Show this help message
@@ -143,6 +147,13 @@ bot.onText(/\/delete/, (msg) => {
   logger.info('/delete', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'delete', step: 'select' });
   bot.sendMessage(chatId, '🗑️ *Delete project*\n\nPlease enter the project ID you want to delete:', { parse_mode: 'Markdown' });
+});
+
+bot.onText(/\/order/, (msg) => {
+  const chatId = msg.chat.id;
+  logger.info('/order', { chatId, username: msg.from?.username });
+  userStates.set(chatId, { action: 'order', step: 'select' });
+  bot.sendMessage(chatId, '🔢 *Set display order*\n\nPlease enter the project ID:', { parse_mode: 'Markdown' });
 });
 
 bot.onText(/\/profile/, async (msg) => {
@@ -200,6 +211,8 @@ bot.on('message', async (msg) => {
       await handleStatusChange(chatId, msg.text, state);
     } else if (state.action === 'delete') {
       await handleDeleteProject(chatId, msg.text, state);
+    } else if (state.action === 'order') {
+      await handleOrderProject(chatId, msg.text, state);
     } else if (state.action === 'profile') {
       await handleProfileEdit(chatId, msg.text, state);
     }
@@ -284,7 +297,7 @@ const handleEditProject = async (chatId, text, state) => {
       ['name', 'description'],
       ['icon', 'href'],
       ['tags', 'status'],
-      ['done']
+      ['order', 'done']
     ];
     
     bot.sendMessage(chatId, `📝 *Editing: ${project.name}*\n\nWhat would you like to edit?`, {
@@ -314,6 +327,13 @@ const handleEditProject = async (chatId, text, state) => {
     
     if (state.field === 'tags') {
       updates.tags = text.split(',').map(tag => tag.trim());
+    } else if (state.field === 'order') {
+      const num = parseInt(text);
+      if (isNaN(num)) {
+        bot.sendMessage(chatId, '❌ Order must be a number. Please try again:');
+        return;
+      }
+      updates.display_order = num;
     } else {
       updates[state.field] = text;
     }
@@ -330,7 +350,7 @@ const handleEditProject = async (chatId, text, state) => {
       ['name', 'description'],
       ['icon', 'href'],
       ['tags', 'status'],
-      ['done']
+      ['order', 'done']
     ];
     
     bot.sendMessage(chatId, 'What else would you like to edit?', {
@@ -417,6 +437,41 @@ const handleDeleteProject = async (chatId, text, state) => {
         reply_markup: { remove_keyboard: true }
       });
     }
+    
+    userStates.delete(chatId);
+  }
+};
+
+// Order project handler
+const handleOrderProject = async (chatId, text, state) => {
+  if (state.step === 'select') {
+    const projectId = parseInt(text);
+    const project = await projectModel.getProjectById(projectId);
+    
+    if (!project) {
+      bot.sendMessage(chatId, '❌ Project not found. Please try again with a valid ID.');
+      return;
+    }
+    
+    state.projectId = projectId;
+    state.project = project;
+    state.step = 'order';
+    
+    const currentOrder = project.display_order != null ? project.display_order : 'not set';
+    bot.sendMessage(chatId, `🔢 *${project.name}*\nCurrent order: ${currentOrder}\n\nEnter the new display order (number):`, {
+      parse_mode: 'Markdown'
+    });
+  } else if (state.step === 'order') {
+    const num = parseInt(text);
+    if (isNaN(num)) {
+      bot.sendMessage(chatId, '❌ Order must be a number. Please try again:');
+      return;
+    }
+    
+    const updatedProject = await projectModel.updateProject(state.projectId, { display_order: num });
+    bot.sendMessage(chatId, `✅ *Order updated!*\n\n${formatProject(updatedProject)}`, {
+      parse_mode: 'Markdown'
+    });
     
     userStates.delete(chatId);
   }

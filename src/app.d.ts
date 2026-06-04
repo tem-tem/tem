@@ -21,6 +21,7 @@ export interface Project {
 	href: string;
 	tags: string[];
 	status: string;
+	display_order?: number;
 	created_at?: string;
 	updated_at?: string;
 }

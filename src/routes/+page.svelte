@@ -4,7 +4,11 @@
 
 	export let data: { projects: Project[]; profile: Profile };
 
-	$: projects = data.projects;
+	$: projects = [...data.projects].sort((a, b) => {
+		const aOrder = a.display_order ?? Infinity;
+		const bOrder = b.display_order ?? Infinity;
+		return aOrder - bOrder;
+	});
 	$: profile = data.profile;
 </script>
 
@@ -12,8 +16,8 @@
 	<div class="col-span-1">
 	</div>
 	<div class="col-span-1 pt-10 flex gap-2 font-mono">
-		<div class="font-bold">I'm {profile.name}</div>
-		<div class=""> - {profile.intro}</div>
+		<div class="font-bold">{profile.name}</div>
+		<div class="">{profile.intro}</div>
 	</div>
 	
 	<!-- <div class="col-span-1 pb-4 pt-12 text-2xl">Projects</div> -->
