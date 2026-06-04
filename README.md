@@ -1,9 +1,3 @@
-docker
-
-docker-compose -f docker-compose.prod.yml restart backend
-
-DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml up -d --build telegram-bot
-
 # Tem's Portfolio
 
 A dynamic portfolio website with a backend API and Telegram bot for managing projects.
@@ -16,56 +10,63 @@ A dynamic portfolio website with a backend API and Telegram bot for managing pro
 - **Bot**: Telegram Bot for project management
 - **Deployment**: Docker containers
 
-## Features
+---
 
-- Dynamic project listing with API integration
-- Project status management (current, wip, in_review, completed, archived, cancelled)
-- Tag system for categorization
-- Telegram bot for remote project management
-- Server-side rendering with fallback data
+## Production Commands
 
-## Quick Start
+> All commands must be run from `~/tem`. Always prefix docker/docker-compose with `DOCKER_API_VERSION=1.43`.
 
-### Prerequisites
+### Restart backend
 
-- Docker and Docker Compose
-- Node.js 18+
-- Telegram Bot Token (optional, for bot functionality)
+```bash
+cd ~/tem
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml restart backend
+```
 
-### Setup
+### Rebuild & restart telegram bot
 
-1. **Clone and setup backend**:
-   ```bash
-   cd backend
-   cp .env.example .env
-   # Edit .env with your configuration
-   npm install
-   ```
+```bash
+cd ~/tem
+git pull
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml build --no-cache telegram-bot
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml up -d telegram-bot
+```
 
-2. **Start the services**:
-   ```bash
-   # Start PostgreSQL and Backend API
-   docker-compose up -d
-   
-   # Run database migrations
-   cd backend && npm run db:migrate
-   ```
+### Rebuild & restart backend
 
-3. **Start the frontend**:
-   ```bash
-   # Install frontend dependencies
-   npm install
-   
-   # Start development server
-   npm run dev
-   ```
+```bash
+cd ~/tem
+git pull
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml build --no-cache backend
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml up -d backend
+```
 
-4. **Setup Telegram Bot** (optional):
-   - Create a bot with @BotFather on Telegram
-   - Add your bot token to `backend/.env`
-   - Start the bot: `cd backend && npm run bot`
+### Run database migrations
 
-### API Endpoints
+```bash
+cd ~/tem
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml exec backend npm run db:migrate
+```
+
+> Note: migrations must run inside the backend container — postgres is not exposed to the host.
+
+### View logs
+
+```bash
+cd ~/tem
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml logs -f backend
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml logs -f telegram-bot
+```
+
+### List running containers
+
+```bash
+DOCKER_API_VERSION=1.43 docker ps
+```
+
+---
+
+## API Endpoints
 
 - `GET /api/projects` - Get all projects
 - `GET /api/projects/:id` - Get project by ID
@@ -74,7 +75,7 @@ A dynamic portfolio website with a backend API and Telegram bot for managing pro
 - `PUT /api/projects/:id` - Update project
 - `DELETE /api/projects/:id` - Delete project
 
-### Project Status Values
+## Project Status Values
 
 - `current` - Active/live projects
 - `wip` - Work in progress
@@ -83,64 +84,40 @@ A dynamic portfolio website with a backend API and Telegram bot for managing pro
 - `archived` - Archived projects
 - `cancelled` - Cancelled projects
 
-### Telegram Bot Commands
+## Telegram Bot Commands
 
 - `/start` - Welcome message and commands
 - `/list` - Show all projects
 - `/add` - Add new project (interactive)
 - `/edit` - Edit existing project
 - `/status` - Change project status
+- `/order` - Set display order for a project
 - `/delete` - Delete project
 - `/help` - Show help
 
-## Development
-
-### Backend Development
-
-```bash
-cd backend
-npm run dev  # Start with nodemon for auto-reload
-```
-
-### Frontend Development
-
-```bash
-npm run dev  # Start SvelteKit dev server
-```
-
-### Database Management
-
-```bash
-cd backend
-npm run db:migrate  # Run migrations
-```
-
-## Production Deployment
-
-1. Set production environment variables
-2. Build the frontend: `npm run build`
-3. Use `docker-compose.prod.yml` for production containers
-4. Set up reverse proxy (nginx) for the frontend
+---
 
 ## Environment Variables
 
-### Backend (.env)
+### Backend (`backend/.env`)
 
 ```env
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=1995
 DB_NAME=tem_portfolio
 DB_USER=tem
-DB_PASSWORD=password
+DB_PASSWORD=your_password
 TELEGRAM_BOT_TOKEN=your_bot_token_here
-PORT=3001
+PORT=19950804
 ```
 
-### Frontend
+### Frontend (`.env`)
 
 ```env
-API_BASE_URL=http://localhost:3001
+API_BASE_URL=https://portfolio.tem.dev
 ```
+
+---
 
 ## Database Schema
 
@@ -152,6 +129,7 @@ API_BASE_URL=http://localhost:3001
 - `icon` (VARCHAR 500)
 - `href` (VARCHAR 500)
 - `status` (VARCHAR 50, DEFAULT 'current')
+- `display_order` (INTEGER, nullable — lower = shown first)
 - `created_at` (TIMESTAMP)
 - `updated_at` (TIMESTAMP)
 

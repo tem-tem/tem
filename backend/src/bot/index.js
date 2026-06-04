@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
+import { GoogleGenAI } from '@google/genai';
 import Project from '../models/Project.js';
 import Profile from '../models/Profile.js';
 
@@ -25,6 +26,213 @@ if (!token) {
 const bot = new TelegramBot(token, { polling: true });
 const projectModel = new Project();
 const profileModel = new Profile();
+
+// Gemini setup
+const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const GEMINI_MODEL = 'gemini-2.0-flash-lite';
+
+// Per-user conversation history for Gemini
+const chatHistories = new Map();
+
+const geminiTools = [
+  {
+    functionDeclarations: [
+      {
+        name: 'list_projects',
+        description: 'Get all projects, optionally filtered by status',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            status: {
+              type: 'STRING',
+              description: 'Optional status filter: current, wip, in_review, completed, archived, cancelled',
+            },
+          },
+        },
+      },
+      {
+        name: 'get_project',
+        description: 'Get a single project by its numeric ID',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            id: { type: 'NUMBER', description: 'Project ID' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'create_project',
+        description: 'Create a new portfolio project',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            name:        { type: 'STRING', description: 'Project name' },
+            description: { type: 'STRING', description: 'Short description' },
+            href:        { type: 'STRING', description: 'URL link to the project' },
+            icon:        { type: 'STRING', description: 'Icon URL' },
+            tags:        { type: 'ARRAY', items: { type: 'STRING' }, description: 'List of tags' },
+            status:      { type: 'STRING', description: 'Status: current, wip, in_review, completed, archived, cancelled' },
+          },
+          required: ['name', 'description'],
+        },
+      },
+      {
+        name: 'update_project',
+        description: 'Update one or more fields of an existing project by ID',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            id:           { type: 'NUMBER', description: 'Project ID to update' },
+            name:         { type: 'STRING' },
+            description:  { type: 'STRING' },
+            href:         { type: 'STRING' },
+            icon:         { type: 'STRING' },
+            tags:         { type: 'ARRAY', items: { type: 'STRING' } },
+            status:       { type: 'STRING', description: 'Status: current, wip, in_review, completed, archived, cancelled' },
+            display_order:{ type: 'NUMBER', description: 'Display order (lower = first)' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'delete_project',
+        description: 'Delete a project by its numeric ID',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            id: { type: 'NUMBER', description: 'Project ID to delete' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'get_profile',
+        description: 'Get the current portfolio profile settings',
+        parameters: { type: 'OBJECT', properties: {} },
+      },
+      {
+        name: 'update_profile',
+        description: 'Update profile settings (name, intro, twitter_url, twitter_label)',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            name:          { type: 'STRING', description: 'Display name' },
+            intro:         { type: 'STRING', description: 'Intro text' },
+            twitter_url:   { type: 'STRING', description: 'Twitter URL' },
+            twitter_label: { type: 'STRING', description: 'Twitter link label' },
+          },
+        },
+      },
+    ],
+  },
+];
+
+const executeTool = async (name, args) => {
+  switch (name) {
+    case 'list_projects': {
+      const projects = args.status
+        ? await projectModel.getProjectsByStatus(args.status)
+        : await projectModel.getAllProjects();
+      return { projects };
+    }
+    case 'get_project': {
+      const project = await projectModel.getProjectById(args.id);
+      return project ? { project } : { error: 'Project not found' };
+    }
+    case 'create_project': {
+      const project = await projectModel.createProject(args);
+      return { project };
+    }
+    case 'update_project': {
+      const { id, ...updates } = args;
+      const project = await projectModel.updateProject(id, updates);
+      return { project };
+    }
+    case 'delete_project': {
+      const deleted = await projectModel.deleteProject(args.id);
+      return deleted ? { deleted: true, name: deleted.name } : { error: 'Project not found' };
+    }
+    case 'get_profile': {
+      const profile = await profileModel.getProfile();
+      return { profile };
+    }
+    case 'update_profile': {
+      for (const [field, value] of Object.entries(args)) {
+        await profileModel.updateSetting(field, value);
+      }
+      const profile = await profileModel.getProfile();
+      return { profile };
+    }
+    default:
+      return { error: `Unknown tool: ${name}` };
+  }
+};
+
+const handleGeminiMessage = async (chatId, text) => {
+  const history = chatHistories.get(chatId) || [];
+
+  history.push({ role: 'user', parts: [{ text }] });
+
+  let response = await genai.models.generateContent({
+    model: GEMINI_MODEL,
+    contents: history,
+    tools: geminiTools,
+    systemInstruction: {
+      parts: [{
+        text: `You are a portfolio project manager assistant. You help manage portfolio projects and profile settings via a Telegram bot. 
+Use the provided tools to read and write data. Be concise and friendly in responses. 
+When creating or updating, confirm what was done. When listing, format nicely.
+Valid project statuses: current, wip, in_review, completed, archived, cancelled.`,
+      }],
+    },
+  });
+
+  // Agentic loop: keep executing tool calls until the model produces a text response
+  while (response.functionCalls && response.functionCalls.length > 0) {
+    const toolResults = [];
+
+    for (const call of response.functionCalls) {
+      logger.info('Gemini tool call', { chatId, tool: call.name, args: call.args });
+      const result = await executeTool(call.name, call.args || {});
+      toolResults.push({
+        functionResponse: {
+          name: call.name,
+          response: result,
+        },
+      });
+    }
+
+    // Append the model's function call turn + our tool responses
+    history.push({ role: 'model', parts: response.functionCalls.map(c => ({ functionCall: c })) });
+    history.push({ role: 'user', parts: toolResults });
+
+    response = await genai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: history,
+      tools: geminiTools,
+      systemInstruction: {
+        parts: [{
+          text: `You are a portfolio project manager assistant. You help manage portfolio projects and profile settings via a Telegram bot. 
+Use the provided tools to read and write data. Be concise and friendly in responses. 
+When creating or updating, confirm what was done. When listing, format nicely.
+Valid project statuses: current, wip, in_review, completed, archived, cancelled.`,
+        }],
+      },
+    });
+  }
+
+  const replyText = response.text || 'Done.';
+
+  history.push({ role: 'model', parts: [{ text: replyText }] });
+
+  // Keep history bounded to last 20 turns to avoid token bloat
+  if (history.length > 40) history.splice(0, history.length - 40);
+
+  chatHistories.set(chatId, history);
+
+  return replyText;
+};
 
 // Bot commands
 const commands = [
@@ -191,35 +399,53 @@ bot.onText(/\/profile/, async (msg) => {
   }
 });
 
-// Handle text messages (multi-step interactions)
+// Handle text messages (multi-step interactions or Gemini AI)
 bot.on('message', async (msg) => {
   if (msg.text?.startsWith('/')) return; // Skip commands
   
   const chatId = msg.chat.id;
   const state = userStates.get(chatId);
-  
-  if (!state) return;
 
-  logger.info('message', { chatId, action: state.action, step: state.step, text: msg.text });
+  // If mid-flow state exists, continue the step-by-step flow
+  if (state) {
+    logger.info('message', { chatId, action: state.action, step: state.step, text: msg.text });
 
-  try {
-    if (state.action === 'add') {
-      await handleAddProject(chatId, msg.text, state);
-    } else if (state.action === 'edit') {
-      await handleEditProject(chatId, msg.text, state);
-    } else if (state.action === 'status') {
-      await handleStatusChange(chatId, msg.text, state);
-    } else if (state.action === 'delete') {
-      await handleDeleteProject(chatId, msg.text, state);
-    } else if (state.action === 'order') {
-      await handleOrderProject(chatId, msg.text, state);
-    } else if (state.action === 'profile') {
-      await handleProfileEdit(chatId, msg.text, state);
+    try {
+      if (state.action === 'add') {
+        await handleAddProject(chatId, msg.text, state);
+      } else if (state.action === 'edit') {
+        await handleEditProject(chatId, msg.text, state);
+      } else if (state.action === 'status') {
+        await handleStatusChange(chatId, msg.text, state);
+      } else if (state.action === 'delete') {
+        await handleDeleteProject(chatId, msg.text, state);
+      } else if (state.action === 'order') {
+        await handleOrderProject(chatId, msg.text, state);
+      } else if (state.action === 'profile') {
+        await handleProfileEdit(chatId, msg.text, state);
+      }
+    } catch (error) {
+      logger.error('Error handling message', { chatId, action: state.action, step: state.step, message: error.message, stack: error.stack });
+      bot.sendMessage(chatId, '❌ An error occurred. Please try again.');
+      userStates.delete(chatId);
     }
+    return;
+  }
+
+  // No active state — route to Gemini
+  if (!process.env.GEMINI_API_KEY) {
+    bot.sendMessage(chatId, '⚠️ GEMINI_API_KEY is not configured.');
+    return;
+  }
+
+  logger.info('Gemini message', { chatId, text: msg.text });
+  try {
+    await bot.sendChatAction(chatId, 'typing');
+    const reply = await handleGeminiMessage(chatId, msg.text);
+    await bot.sendMessage(chatId, reply, { parse_mode: 'Markdown', disable_web_page_preview: true });
   } catch (error) {
-    logger.error('Error handling message', { chatId, action: state.action, step: state.step, message: error.message, stack: error.stack });
-    bot.sendMessage(chatId, '❌ An error occurred. Please try again.');
-    userStates.delete(chatId);
+    logger.error('Gemini error', { chatId, message: error.message, stack: error.stack });
+    await bot.sendMessage(chatId, '❌ AI error. Please try again.');
   }
 });
 
