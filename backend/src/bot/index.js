@@ -29,7 +29,7 @@ const profileModel = new Profile();
 
 // Gemini setup
 const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const GEMINI_MODEL = 'gemini-2.0-flash-lite';
+const GEMINI_MODEL = 'gemini-3.1-flash-lite';
 
 // Per-user conversation history for Gemini
 const chatHistories = new Map();
