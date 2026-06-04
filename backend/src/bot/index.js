@@ -72,7 +72,7 @@ const geminiTools = [
             href:        { type: 'STRING', description: 'URL link to the project' },
             icon:        { type: 'STRING', description: 'Icon URL' },
             tags:        { type: 'ARRAY', items: { type: 'STRING' }, description: 'List of tags' },
-            status:      { type: 'STRING', description: 'Status: current, wip, in_review, completed, archived, cancelled' },
+            status:      { type: 'STRING', description: 'Project status, any free-form string (e.g. "waiting_for_review", "archived", "in_progress")' },
           },
           required: ['name', 'description'],
         },
@@ -89,7 +89,7 @@ const geminiTools = [
             href:         { type: 'STRING' },
             icon:         { type: 'STRING' },
             tags:         { type: 'ARRAY', items: { type: 'STRING' } },
-            status:       { type: 'STRING', description: 'Status: current, wip, in_review, completed, archived, cancelled' },
+            status:       { type: 'STRING', description: 'Project status, any free-form string (e.g. "waiting_for_review", "archived", "in_progress")' },
             display_order:{ type: 'NUMBER', description: 'Display order (lower = first)' },
           },
           required: ['id'],
@@ -174,7 +174,7 @@ const GEMINI_CONFIG = {
   systemInstruction: `You are a portfolio project manager assistant. You help manage portfolio projects and profile settings via a Telegram bot.
 Use the provided tools to read and write data. Be concise and friendly in responses.
 When creating or updating, confirm what was done. When listing, format nicely.
-Valid project statuses: current, wip, in_review, completed, archived, cancelled.`,
+Valid project statuses: any free-form string is accepted (e.g. "waiting_for_review", "in_progress", "archived"). Use whatever the user says verbatim.`,
 };
 
 const handleGeminiMessage = async (chatId, text) => {
@@ -437,7 +437,6 @@ bot.on('message', async (msg) => {
     await bot.editMessageText(reply, {
       chat_id: chatId,
       message_id: thinkingMsg.message_id,
-      parse_mode: 'Markdown',
       disable_web_page_preview: true,
     });
   } catch (error) {
