@@ -203,8 +203,8 @@ const handleGeminiMessage = async (chatId, text) => {
       });
     }
 
-    // Append the model's function call turn + our tool responses
-    history.push({ role: 'model', parts: response.functionCalls.map(c => ({ functionCall: c })) });
+    // Preserve the exact model content (including thought_signature parts) to avoid API errors
+    history.push(response.candidates[0].content);
     history.push({ role: 'user', parts: toolResults });
 
     response = await genai.models.generateContent({
@@ -431,13 +431,21 @@ bot.on('message', async (msg) => {
   }
 
   logger.info('Gemini message', { chatId, text: msg.text });
+  const thinkingMsg = await bot.sendMessage(chatId, '...');
   try {
-    await bot.sendChatAction(chatId, 'typing');
     const reply = await handleGeminiMessage(chatId, msg.text);
-    await bot.sendMessage(chatId, reply, { parse_mode: 'Markdown', disable_web_page_preview: true });
+    await bot.editMessageText(reply, {
+      chat_id: chatId,
+      message_id: thinkingMsg.message_id,
+      parse_mode: 'Markdown',
+      disable_web_page_preview: true,
+    });
   } catch (error) {
     logger.error('Gemini error', { chatId, message: error.message, stack: error.stack });
-    await bot.sendMessage(chatId, '❌ AI error. Please try again.');
+    await bot.editMessageText('❌ AI error. Please try again.', {
+      chat_id: chatId,
+      message_id: thinkingMsg.message_id,
+    });
   }
 });
 
