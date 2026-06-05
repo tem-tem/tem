@@ -1,5 +1,8 @@
 <script lang="ts">
 	export let data: { results: any[]; q: string };
+
+	const videoUrl = (videoName: string) =>
+		`https://cdn.spottedinprod.com/clips/${videoName}`;
 </script>
 
 <div class="wrap">
@@ -18,24 +21,40 @@
 	{:else if data.results.length > 0}
 		<div class="results">
 			{#each data.results as result}
-				<div class="result">
-					<span class="title">
+				<article class="card">
+					<a
+						href="https://www.spottedinprod.com/clips/{result.postId}"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="video-link"
+					>
+						<video
+							src={videoUrl(result.videoName)}
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="auto"
+						></video>
+					</a>
+					<div class="meta">
 						<a
 							href="https://www.spottedinprod.com/clips/{result.postId}"
 							target="_blank"
 							rel="noopener noreferrer"
 							class="clip-link"
 						>{result.displayName}</a>
-						<a
-							href="https://www.spottedinprod.com/apps/{result.appName}"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="app"
-						>app: {result.appName}</a>
-					<span class="chip">{(result.score * 100).toFixed(1)}%</span>
-					</span>
-
-				</div>
+						<div class="sub">
+							<a
+								href="https://www.spottedinprod.com/apps/{result.appName}"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="app"
+							>{result.appName}</a>
+							<span class="chip">{(result.score * 100).toFixed(1)}%</span>
+						</div>
+					</div>
+				</article>
 			{/each}
 		</div>
 	{/if}
@@ -94,28 +113,53 @@
 	}
 
 	.results {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 20px;
+	}
+
+	.card {
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
-		padding-left: 14px;
-	}
-
-	.result {
-		display: flex;
-		align-items: baseline;
-		gap: 10px;
-		flex-wrap: wrap;
-	}
-
-	.title {
-		font-size: 14px;
-		flex: 1;
+		gap: 8px;
 		min-width: 0;
 	}
 
+	.video-link {
+		display: block;
+		aspect-ratio: 9 / 19.5;
+		background: #f3f4f6;
+		overflow: hidden;
+	}
+
+	.video-link video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.meta {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		min-width: 0;
+	}
+
+	.sub {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+	}
+
 	.clip-link {
+		font-size: 13px;
 		color: inherit;
 		text-decoration: none;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.clip-link:hover {
@@ -124,8 +168,12 @@
 	}
 
 	.app {
+		font-size: 12px;
 		color: #9ca3af;
 		text-decoration: none;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.app:hover {
@@ -134,12 +182,13 @@
 	}
 
 	.chip {
-		font-size: 12px;
+		font-size: 11px;
 		background: #f3f4f6;
 		color: #6b7280;
 		padding: 2px 8px;
 		border-radius: 999px;
 		white-space: nowrap;
+		flex-shrink: 0;
 	}
 
 	.empty {

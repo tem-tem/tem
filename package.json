@@ -6,6 +6,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"prepare": "svelte-kit sync",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
@@ -13,6 +14,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.0.1",
 		"@sveltejs/kit": "^2.26.1",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"autoprefixer": "^10.4.21",
 		"eslint": "^9.32.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -22,7 +24,7 @@
 		"prettier-plugin-svelte": "^3.4.0",
 		"svelte": "^5.37.1",
 		"tailwindcss": "^3.4.17",
-		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"typescript": "^5.9.3",
 		"vite": "^6.0.0"
 	}
 }
