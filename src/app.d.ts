@@ -22,6 +22,7 @@ export interface Project {
 	tags: string[];
 	status: string;
 	display_order?: number;
+	has_bg_image?: boolean;
 	created_at?: string;
 	updated_at?: string;
 }

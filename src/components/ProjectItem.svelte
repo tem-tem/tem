@@ -1,27 +1,52 @@
-<script lang=ts>
+<script lang="ts">
     export let name: string;
     export let description: string;
-    export let icon: string;
+    export const icon: string = '';
     export let href: string;
     export let tags: string[] = [];
     export let status: string = 'current';
+    export let id: number;
+    export let has_bg_image: boolean = false;
+
+    $: bgImageUrl = has_bg_image ? `/api/projects/${id}/bg_image` : null;
 </script>
 
-<div class="flex flex-col justify-start group">
-    
-    <p class="opacity-75">
-        <a href={href} target="_blank" rel="noopener noreferrer" class="items-center gap-3 decoration-1 underline-offset-8 hover:text-blue-600 mb-8 ">
-            <!-- <span class="inline-block mr-1">
-                <img src={icon} alt={name} class="w-3 h-3 rounded overflow-hidden" />
-            </span> -->
-            <span class="">{name}</span>
-            <span class="opacity-75 ml-1"> - </span>
-            <span class="ml-1">
-                {description}
-            </span>
+<a
+    {href}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="group block aspect-square relative overflow-hidden border border-current/10 hover:border-current/30 transition-colors"
+>
+    {#if bgImageUrl}
+        <img
+            src={bgImageUrl}
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity"
+        />
+    {/if}
+
+    <div class="relative h-full flex flex-col p-4 font-mono">
+        <!-- top row: title + status -->
+        <div class="flex items-start justify-between gap-2">
+            <span class="font-bold leading-tight">{name}</span>
             {#if status}
-            <span class="ml-1 opacity-50">({status})</span>
+                <span class="text-xs opacity-50 shrink-0 mt-px">{status}</span>
             {/if}
-        </a>
-    </p>
-</div>
+        </div>
+
+        <!-- spacer -->
+        <div class="flex-1"></div>
+
+        <!-- bottom: description -->
+        <p class="text-sm opacity-75 leading-snug mb-3">{description}</p>
+
+        <!-- footer: tags -->
+        {#if tags.length > 0}
+            <div class="flex flex-wrap gap-1">
+                {#each tags as tag}
+                    <span class="text-xs opacity-50">{tag}</span>
+                {/each}
+            </div>
+        {/if}
+    </div>
+</a>

@@ -16,7 +16,9 @@ class Project {
   async getAllProjects() {
     const query = `
       SELECT 
-        p.*,
+        p.id, p.name, p.description, p.icon, p.href, p.status,
+        p.display_order, p.created_at, p.updated_at,
+        (p.bg_image IS NOT NULL) AS has_bg_image,
         COALESCE(
           JSON_AGG(
             CASE WHEN pt.tag IS NOT NULL THEN pt.tag ELSE NULL END
@@ -36,7 +38,9 @@ class Project {
   async getProjectById(id) {
     const query = `
       SELECT 
-        p.*,
+        p.id, p.name, p.description, p.icon, p.href, p.status,
+        p.display_order, p.created_at, p.updated_at,
+        (p.bg_image IS NOT NULL) AS has_bg_image,
         COALESCE(
           JSON_AGG(
             CASE WHEN pt.tag IS NOT NULL THEN pt.tag ELSE NULL END
@@ -61,8 +65,8 @@ class Project {
       
       // Insert project
       const projectQuery = `
-        INSERT INTO projects (name, description, icon, href, status)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO projects (name, description, icon, href, status, bg_image, bg_image_mime)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *
       `;
       
@@ -71,7 +75,9 @@ class Project {
         project.description,
         project.icon,
         project.href,
-        project.status || 'current'
+        project.status || 'current',
+        project.bg_image || null,
+        project.bg_image_mime || null
       ]);
       
       const newProject = projectResult.rows[0];
@@ -133,6 +139,12 @@ class Project {
         fields.push(`display_order = $${paramCount++}`);
         values.push(updates.display_order);
       }
+      if (updates.bg_image !== undefined) {
+        fields.push(`bg_image = $${paramCount++}`);
+        values.push(updates.bg_image);
+        fields.push(`bg_image_mime = $${paramCount++}`);
+        values.push(updates.bg_image_mime || null);
+      }
       
       fields.push(`updated_at = $${paramCount++}`);
       values.push(new Date());
@@ -175,6 +187,21 @@ class Project {
     } finally {
       client.release();
     }
+  }
+
+  async getBgImage(id) {
+    const query = 'SELECT bg_image, bg_image_mime FROM projects WHERE id = $1';
+    const result = await this.pool.query(query, [id]);
+    const row = result.rows[0];
+    if (!row || !row.bg_image) return null;
+    return { data: row.bg_image, mime: row.bg_image_mime || 'image/jpeg' };
+  }
+
+  async deleteBgImage(id) {
+    await this.pool.query(
+      'UPDATE projects SET bg_image = NULL, bg_image_mime = NULL, updated_at = $1 WHERE id = $2',
+      [new Date(), id]
+    );
   }
 
   async deleteProject(id) {

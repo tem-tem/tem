@@ -6,6 +6,8 @@
 </script>
 
 <div class="wrap">
+	<a href="/" class="back">← Home</a>
+
 	<form method="GET" class="search-form">
 		<input
 			type="text"
@@ -72,6 +74,22 @@
 		padding-top: 40px;
 		font-family: monospace;
 		min-height: 60vh;
+		position: relative;
+	}
+
+	.back {
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-size: 14px;
+		color: #6b7280;
+		text-decoration: none;
+	}
+
+	.back:hover {
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 4px;
 	}
 
 	.search-form {

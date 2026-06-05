@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
+import https from 'https';
 import { GoogleGenAI } from '@google/genai';
 import Project from '../models/Project.js';
 import Profile from '../models/Profile.js';
@@ -16,6 +17,16 @@ const logger = {
   warn:  (msg, extra) => console.warn(logger._fmt('WARN ', msg, extra)),
   error: (msg, extra) => console.error(logger._fmt('ERROR', msg, extra)),
 };
+
+const downloadBuffer = (url) =>
+  new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => resolve({ buffer: Buffer.concat(chunks), mime: res.headers['content-type'] || 'image/jpeg' }));
+      res.on('error', reject);
+    }).on('error', reject);
+  });
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 if (!token) {
@@ -391,9 +402,51 @@ bot.onText(/\/profile/, async (msg) => {
   }
 });
 
+// Handle photo messages (bg_image upload)
+bot.on('photo', async (msg) => {
+  const chatId = msg.chat.id;
+  const state = userStates.get(chatId);
+  if (!state) return;
+
+  const isAddBgStep = state.action === 'add' && state.step === 'bg_image';
+  const isEditBgStep = state.action === 'edit' && state.step === 'value' && state.field === 'bg_image';
+  if (!isAddBgStep && !isEditBgStep) return;
+
+  try {
+    const photo = msg.photo[msg.photo.length - 1]; // largest size
+    const fileLink = await bot.getFileLink(photo.file_id);
+    const { buffer, mime } = await downloadBuffer(fileLink);
+
+    if (isAddBgStep) {
+      state.project.bg_image = buffer;
+      state.project.bg_image_mime = mime;
+      await finishAddProject(chatId, state);
+    } else {
+      await projectModel.updateProject(state.projectId, { bg_image: buffer, bg_image_mime: mime });
+      bot.sendMessage(chatId, '✅ Background image updated!');
+      state.step = 'field';
+      const options = [
+        ['name', 'description'],
+        ['icon', 'href'],
+        ['tags', 'status'],
+        ['bg_image', 'order'],
+        ['done']
+      ];
+      bot.sendMessage(chatId, 'What else would you like to edit?', {
+        reply_markup: { keyboard: options, one_time_keyboard: true, resize_keyboard: true }
+      });
+    }
+  } catch (error) {
+    logger.error('Error handling photo upload', { chatId, message: error.message });
+    bot.sendMessage(chatId, '❌ Failed to save image. Please try again.');
+    userStates.delete(chatId);
+  }
+});
+
 // Handle text messages (multi-step interactions or Gemini AI)
 bot.on('message', async (msg) => {
   if (msg.text?.startsWith('/')) return; // Skip commands
+  if (msg.photo) return; // handled by photo handler above
   
   const chatId = msg.chat.id;
   const state = userStates.get(chatId);
@@ -401,6 +454,20 @@ bot.on('message', async (msg) => {
   // If mid-flow state exists, continue the step-by-step flow
   if (state) {
     logger.info('message', { chatId, action: state.action, step: state.step, text: msg.text });
+
+    // If waiting for a photo, ignore plain text (except "skip" on add flow)
+    if (state.action === 'add' && state.step === 'bg_image') {
+      if (msg.text?.toLowerCase() === 'skip') {
+        await finishAddProject(chatId, state);
+      } else {
+        bot.sendMessage(chatId, '📸 Please send a photo or type "skip".');
+      }
+      return;
+    }
+    if (state.action === 'edit' && state.step === 'value' && state.field === 'bg_image' && msg.text?.toLowerCase() !== 'remove') {
+      bot.sendMessage(chatId, '📸 Please send a photo or type "remove" to clear.');
+      return;
+    }
 
     try {
       if (state.action === 'add') {
@@ -491,16 +558,20 @@ const handleAddProject = async (chatId, text, state) => {
     });
   } else if (state.step === 'status') {
     state.project.status = text;
-    
-    // Create the project
-    const project = await projectModel.createProject(state.project);
-    bot.sendMessage(chatId, `✅ *Project created successfully!*\n\n${formatProject(project)}`, {
-      parse_mode: 'Markdown',
+    state.step = 'bg_image';
+    bot.sendMessage(chatId, '🖼️ Send a background image photo, or type "skip":', {
       reply_markup: { remove_keyboard: true }
     });
-    
-    userStates.delete(chatId);
   }
+};
+
+const finishAddProject = async (chatId, state) => {
+  const project = await projectModel.createProject(state.project);
+  bot.sendMessage(chatId, `✅ *Project created successfully!*\n\n${formatProject(project)}`, {
+    parse_mode: 'Markdown',
+    reply_markup: { remove_keyboard: true }
+  });
+  userStates.delete(chatId);
 };
 
 // Edit project handler
@@ -522,7 +593,8 @@ const handleEditProject = async (chatId, text, state) => {
       ['name', 'description'],
       ['icon', 'href'],
       ['tags', 'status'],
-      ['order', 'done']
+      ['bg_image', 'order'],
+      ['done']
     ];
     
     bot.sendMessage(chatId, `📝 *Editing: ${project.name}*\n\nWhat would you like to edit?`, {
@@ -544,9 +616,15 @@ const handleEditProject = async (chatId, text, state) => {
     
     state.field = text;
     state.step = 'value';
-    bot.sendMessage(chatId, `Enter new ${text}:`, {
-      reply_markup: { remove_keyboard: true }
-    });
+    if (text === 'bg_image') {
+      bot.sendMessage(chatId, '🖼️ Send a background image photo, or type "remove" to clear it:', {
+        reply_markup: { remove_keyboard: true }
+      });
+    } else {
+      bot.sendMessage(chatId, `Enter new ${text}:`, {
+        reply_markup: { remove_keyboard: true }
+      });
+    }
   } else if (state.step === 'value') {
     const updates = {};
     
@@ -559,6 +637,26 @@ const handleEditProject = async (chatId, text, state) => {
         return;
       }
       updates.display_order = num;
+    } else if (state.field === 'bg_image') {
+      if (text.toLowerCase() === 'remove') {
+        await projectModel.deleteBgImage(state.projectId);
+        bot.sendMessage(chatId, '✅ Background image removed.');
+      } else {
+        bot.sendMessage(chatId, '📸 Please send a photo (not text) to set a background image.');
+        return;
+      }
+      state.step = 'field';
+      const options = [
+        ['name', 'description'],
+        ['icon', 'href'],
+        ['tags', 'status'],
+        ['bg_image', 'order'],
+        ['done']
+      ];
+      bot.sendMessage(chatId, 'What else would you like to edit?', {
+        reply_markup: { keyboard: options, one_time_keyboard: true, resize_keyboard: true }
+      });
+      return;
     } else {
       updates[state.field] = text;
     }
@@ -575,7 +673,8 @@ const handleEditProject = async (chatId, text, state) => {
       ['name', 'description'],
       ['icon', 'href'],
       ['tags', 'status'],
-      ['order', 'done']
+      ['bg_image', 'order'],
+      ['done']
     ];
     
     bot.sendMessage(chatId, 'What else would you like to edit?', {

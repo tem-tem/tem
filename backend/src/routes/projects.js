@@ -15,6 +15,33 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/projects/:id/bg_image - Serve project background image
+router.get('/:id/bg_image', async (req, res) => {
+  try {
+    const image = await projectModel.getBgImage(req.params.id);
+    if (!image) {
+      return res.status(404).json({ error: 'No background image found' });
+    }
+    res.set('Content-Type', image.mime);
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.send(image.data);
+  } catch (error) {
+    console.error('Error fetching bg image:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// DELETE /api/projects/:id/bg_image - Remove project background image
+router.delete('/:id/bg_image', async (req, res) => {
+  try {
+    await projectModel.deleteBgImage(req.params.id);
+    res.json({ message: 'Background image removed' });
+  } catch (error) {
+    console.error('Error deleting bg image:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // GET /api/projects/:id - Get project by ID
 router.get('/:id', async (req, res) => {
   try {
