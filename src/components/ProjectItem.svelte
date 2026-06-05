@@ -15,7 +15,7 @@
     {href}
     target="_blank"
     rel="noopener noreferrer"
-    class="group block aspect-square relative overflow-hidden border border-current/10 hover:border-current/30 transition-colors"
+    class="group block aspect-square relative overflow-hidden border border-current/10 hover:border-current transition-colors"
 >
     {#if bgImageUrl}
         <img
