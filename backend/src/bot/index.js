@@ -444,7 +444,7 @@ bot.on('photo', async (msg) => {
       state.project.bg_image = buffer;
       state.project.bg_image_mime = mime;
       state.step = 'logo';
-      bot.sendMessage(chatId, '🏷️ Send a logo image (PNG), or type "skip":', {
+      bot.sendMessage(chatId, '🏷️ Send a logo image as a file (PNG, SVG, WebP…), or type "skip":', {
         reply_markup: { remove_keyboard: true }
       });
     } else if (isAddLogoStep) {
@@ -468,6 +468,60 @@ bot.on('photo', async (msg) => {
     }
   } catch (error) {
     logger.error('Error handling photo upload', { chatId, message: error.message });
+    bot.sendMessage(chatId, '❌ Failed to save image. Please try again.');
+    userStates.delete(chatId);
+  }
+});
+
+// Handle document messages (images sent as files to preserve original format)
+bot.on('document', async (msg) => {
+  if (!isAllowed(msg)) return;
+  const chatId = msg.chat.id;
+  const state = userStates.get(chatId);
+  if (!state) return;
+
+  const mime = msg.document.mime_type || '';
+  const isImage = mime.startsWith('image/');
+  if (!isImage) return;
+
+  const isAddBgStep = state.action === 'add' && state.step === 'bg_image';
+  const isAddLogoStep = state.action === 'add' && state.step === 'logo';
+  const isEditBgStep = state.action === 'edit' && state.step === 'value' && state.field === 'bg_image';
+  const isEditLogoStep = state.action === 'edit' && state.step === 'value' && state.field === 'logo';
+  if (!isAddBgStep && !isAddLogoStep && !isEditBgStep && !isEditLogoStep) return;
+
+  try {
+    const fileLink = await bot.getFileLink(msg.document.file_id);
+    const { buffer } = await downloadBuffer(fileLink);
+
+    if (isAddBgStep) {
+      state.project.bg_image = buffer;
+      state.project.bg_image_mime = mime;
+      state.step = 'logo';
+      bot.sendMessage(chatId, '🏷️ Send a logo image as a file (PNG, SVG, WebP…), or type "skip":', {
+        reply_markup: { remove_keyboard: true }
+      });
+    } else if (isAddLogoStep) {
+      state.project.logo = buffer;
+      state.project.logo_mime = mime;
+      await finishAddProject(chatId, state);
+    } else if (isEditLogoStep) {
+      await projectModel.updateProject(state.projectId, { logo: buffer, logo_mime: mime });
+      bot.sendMessage(chatId, '✅ Logo updated!');
+      state.step = 'field';
+      bot.sendMessage(chatId, 'What else would you like to edit?', {
+        reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
+      });
+    } else {
+      await projectModel.updateProject(state.projectId, { bg_image: buffer, bg_image_mime: mime });
+      bot.sendMessage(chatId, '✅ Background image updated!');
+      state.step = 'field';
+      bot.sendMessage(chatId, 'What else would you like to edit?', {
+        reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
+      });
+    }
+  } catch (error) {
+    logger.error('Error handling document upload', { chatId, message: error.message });
     bot.sendMessage(chatId, '❌ Failed to save image. Please try again.');
     userStates.delete(chatId);
   }
@@ -507,6 +561,7 @@ bot.on('message', async (msg) => {
   if (msg.text?.startsWith('/')) return; // Skip commands
   if (msg.photo) return; // handled by photo handler above
   if (msg.video) return; // handled by video handler above
+  if (msg.document) return; // handled by document handler above
   
   const chatId = msg.chat.id;
   const state = userStates.get(chatId);
@@ -519,7 +574,7 @@ bot.on('message', async (msg) => {
     if (state.action === 'add' && state.step === 'bg_image') {
       if (msg.text?.toLowerCase() === 'skip') {
         state.step = 'logo';
-        bot.sendMessage(chatId, '🏷️ Send a logo image (PNG), or type "skip":', {
+        bot.sendMessage(chatId, '🏷️ Send a logo image as a file (PNG, SVG, WebP…), or type "skip":', {
           reply_markup: { remove_keyboard: true }
         });
       } else {
@@ -531,12 +586,12 @@ bot.on('message', async (msg) => {
       if (msg.text?.toLowerCase() === 'skip') {
         await finishAddProject(chatId, state);
       } else {
-        bot.sendMessage(chatId, '🏷️ Please send a photo or type "skip".');
+        bot.sendMessage(chatId, '🏷️ Please send a logo image as a file (not a photo) or type "skip".');
       }
       return;
     }
     if (state.action === 'edit' && state.step === 'value' && state.field === 'logo' && msg.text?.toLowerCase() !== 'remove') {
-      bot.sendMessage(chatId, '🏷️ Please send a photo or type "remove" to clear.');
+      bot.sendMessage(chatId, '🏷️ Please send an image as a file (not a photo), or type "remove" to clear.');
       return;
     }
     if (state.action === 'edit' && state.step === 'value' && state.field === 'bg_image' && msg.text?.toLowerCase() !== 'remove') {
@@ -688,7 +743,7 @@ const handleEditProject = async (chatId, text, state) => {
     state.field = text;
     state.step = 'value';
     if (text === 'logo') {
-      bot.sendMessage(chatId, '🏷️ Send a logo image (PNG), or type "remove" to clear it:', {
+      bot.sendMessage(chatId, '🏷️ Send a logo image as a file (PNG, SVG, WebP…), or type "remove" to clear it:', {
         reply_markup: { remove_keyboard: true }
       });
     } else if (text === 'bg_image') {

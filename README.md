@@ -30,6 +30,17 @@ cd ~/tem
 git pull
 DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml build --no-cache telegram-bot
 DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml up -d telegram-bot
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml build --no-cache backend
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml up -d backend
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml exec backend npm run db:migrate
+```
+
+
+```bash
+cd ~/tem
+git pull
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml build --no-cache telegram-bot
+DOCKER_API_VERSION=1.43 docker-compose -f docker-compose.prod.yml up -d telegram-bot
 ```
 
 ### Rebuild & restart backend
