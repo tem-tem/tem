@@ -966,13 +966,15 @@ const handleProfileEdit = async (chatId, text, state) => {
       twitter_url: 'Twitter URL',
       twitter_label: 'Twitter link label'
     };
-    
-    bot.sendMessage(chatId, `Enter new ${fieldLabels[text] || text}:`, {
+
+    const hint = text === 'intro' ? ' (or type "clear" to remove it)' : '';
+    bot.sendMessage(chatId, `Enter new ${fieldLabels[text] || text}${hint}:`, {
       reply_markup: { remove_keyboard: true }
     });
   } else if (state.step === 'value') {
     try {
-      await profileModel.updateSetting(state.field, text);
+      const value = (state.field === 'intro' && text.toLowerCase() === 'clear') ? '' : text;
+      await profileModel.updateSetting(state.field, value);
       
       bot.sendMessage(chatId, `✅ *${state.field} updated successfully!*`, {
         parse_mode: 'Markdown'
