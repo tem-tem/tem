@@ -19,8 +19,8 @@
 			<div class="">{profile.intro}</div>
 		</div>
 
-		<div class="flex gap-2">
-			<a href={profile.twitter_url} class="opacity-75 hover:text-blue-600 underline-offset-8">{profile.twitter_label}</a>
+		<div class="flex gap-2 font-bold">
+			<a href={profile.twitter_url} class="hover:text-blue-600 underline-offset-8">{profile.twitter_label}</a>
 		</div>
 	</div>
 

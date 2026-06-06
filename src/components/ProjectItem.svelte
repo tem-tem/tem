@@ -79,8 +79,8 @@
             />
         {/if}
 
-        <!-- Text overlay (always on top) -->
-        <div class="absolute bottom-0 left-0 right-0 p-3 flex flex-col items-start gap-1">
+        <!-- Text overlay (visible on hover) -->
+        <div class="absolute bottom-0 left-0 right-0 p-3 flex flex-col items-start gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <p class="text-sm leading-snug">
                 <span class="bg-white text-black px-1 [box-decoration-break:clone]">{description}</span>
             </p>
