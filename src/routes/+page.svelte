@@ -34,6 +34,7 @@
 				href={project.href}
 				tags={project.tags}
 				status={project.status}
+				has_logo={project.has_logo ?? false}
 				has_bg_image={project.has_bg_image ?? false}
 				has_bg_video={project.has_bg_video ?? false}
 				updated_at={project.updated_at}

@@ -15,6 +15,33 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/projects/:id/logo - Serve project logo
+router.get('/:id/logo', async (req, res) => {
+  try {
+    const logo = await projectModel.getLogo(req.params.id);
+    if (!logo) {
+      return res.status(404).json({ error: 'No logo found' });
+    }
+    res.set('Content-Type', logo.mime);
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.send(logo.data);
+  } catch (error) {
+    console.error('Error fetching logo:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// DELETE /api/projects/:id/logo - Remove project logo
+router.delete('/:id/logo', async (req, res) => {
+  try {
+    await projectModel.deleteLogo(req.params.id);
+    res.json({ message: 'Logo removed' });
+  } catch (error) {
+    console.error('Error deleting logo:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // GET /api/projects/:id/bg_image - Serve project background image
 router.get('/:id/bg_image', async (req, res) => {
   try {

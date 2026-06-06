@@ -28,6 +28,9 @@ const downloadBuffer = (url) =>
     }).on('error', reject);
   });
 
+const ALLOWED_USERNAME = 'temtotem';
+const isAllowed = (msg) => msg.from?.username === ALLOWED_USERNAME;
+
 const token = process.env.TELEGRAM_BOT_TOKEN;
 if (!token) {
   logger.error('TELEGRAM_BOT_TOKEN environment variable is required');
@@ -294,6 +297,7 @@ const showProjects = async (chatId, status = null) => {
 
 // Command handlers
 bot.onText(/\/start/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/start', { chatId, username: msg.from?.username });
   const welcomeMessage = `
@@ -317,6 +321,7 @@ Get started by typing /list to see your current projects!
 });
 
 bot.onText(/\/help/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/help', { chatId, username: msg.from?.username });
   const helpMessage = commands
@@ -327,12 +332,14 @@ bot.onText(/\/help/, (msg) => {
 });
 
 bot.onText(/\/list/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/list', { chatId, username: msg.from?.username });
   showProjects(chatId);
 });
 
 bot.onText(/\/add/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/add', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'add', step: 'name' });
@@ -340,6 +347,7 @@ bot.onText(/\/add/, (msg) => {
 });
 
 bot.onText(/\/edit/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/edit', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'edit', step: 'select' });
@@ -347,6 +355,7 @@ bot.onText(/\/edit/, (msg) => {
 });
 
 bot.onText(/\/status/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/status', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'status', step: 'select' });
@@ -354,6 +363,7 @@ bot.onText(/\/status/, (msg) => {
 });
 
 bot.onText(/\/delete/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/delete', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'delete', step: 'select' });
@@ -361,6 +371,7 @@ bot.onText(/\/delete/, (msg) => {
 });
 
 bot.onText(/\/order/, (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/order', { chatId, username: msg.from?.username });
   userStates.set(chatId, { action: 'order', step: 'select' });
@@ -368,6 +379,7 @@ bot.onText(/\/order/, (msg) => {
 });
 
 bot.onText(/\/profile/, async (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   logger.info('/profile', { chatId, username: msg.from?.username });
   
@@ -406,19 +418,22 @@ const EDIT_OPTIONS = [
   ['name', 'description'],
   ['icon', 'href'],
   ['tags', 'status'],
-  ['bg_image', 'bg_video'],
+  ['logo', 'bg_image', 'bg_video'],
   ['order', 'done']
 ];
 
-// Handle photo messages (bg_image upload)
+// Handle photo messages (logo / bg_image upload)
 bot.on('photo', async (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   const state = userStates.get(chatId);
   if (!state) return;
 
   const isAddBgStep = state.action === 'add' && state.step === 'bg_image';
+  const isAddLogoStep = state.action === 'add' && state.step === 'logo';
   const isEditBgStep = state.action === 'edit' && state.step === 'value' && state.field === 'bg_image';
-  if (!isAddBgStep && !isEditBgStep) return;
+  const isEditLogoStep = state.action === 'edit' && state.step === 'value' && state.field === 'logo';
+  if (!isAddBgStep && !isAddLogoStep && !isEditBgStep && !isEditLogoStep) return;
 
   try {
     const photo = msg.photo[msg.photo.length - 1]; // largest size
@@ -428,7 +443,21 @@ bot.on('photo', async (msg) => {
     if (isAddBgStep) {
       state.project.bg_image = buffer;
       state.project.bg_image_mime = mime;
+      state.step = 'logo';
+      bot.sendMessage(chatId, '🏷️ Send a logo image (PNG), or type "skip":', {
+        reply_markup: { remove_keyboard: true }
+      });
+    } else if (isAddLogoStep) {
+      state.project.logo = buffer;
+      state.project.logo_mime = mime;
       await finishAddProject(chatId, state);
+    } else if (isEditLogoStep) {
+      await projectModel.updateProject(state.projectId, { logo: buffer, logo_mime: mime });
+      bot.sendMessage(chatId, '✅ Logo updated!');
+      state.step = 'field';
+      bot.sendMessage(chatId, 'What else would you like to edit?', {
+        reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
+      });
     } else {
       await projectModel.updateProject(state.projectId, { bg_image: buffer, bg_image_mime: mime });
       bot.sendMessage(chatId, '✅ Background image updated!');
@@ -446,6 +475,7 @@ bot.on('photo', async (msg) => {
 
 // Handle video messages (bg_video upload)
 bot.on('video', async (msg) => {
+  if (!isAllowed(msg)) return;
   const chatId = msg.chat.id;
   const state = userStates.get(chatId);
   if (!state) return;
@@ -473,6 +503,7 @@ bot.on('video', async (msg) => {
 
 // Handle text messages (multi-step interactions or Gemini AI)
 bot.on('message', async (msg) => {
+  if (!isAllowed(msg)) return;
   if (msg.text?.startsWith('/')) return; // Skip commands
   if (msg.photo) return; // handled by photo handler above
   if (msg.video) return; // handled by video handler above
@@ -484,13 +515,28 @@ bot.on('message', async (msg) => {
   if (state) {
     logger.info('message', { chatId, action: state.action, step: state.step, text: msg.text });
 
-    // If waiting for a photo, ignore plain text (except "skip" on add flow)
+    // If waiting for a photo/video, ignore plain text (except "skip"/"remove")
     if (state.action === 'add' && state.step === 'bg_image') {
       if (msg.text?.toLowerCase() === 'skip') {
-        await finishAddProject(chatId, state);
+        state.step = 'logo';
+        bot.sendMessage(chatId, '🏷️ Send a logo image (PNG), or type "skip":', {
+          reply_markup: { remove_keyboard: true }
+        });
       } else {
         bot.sendMessage(chatId, '📸 Please send a photo or type "skip".');
       }
+      return;
+    }
+    if (state.action === 'add' && state.step === 'logo') {
+      if (msg.text?.toLowerCase() === 'skip') {
+        await finishAddProject(chatId, state);
+      } else {
+        bot.sendMessage(chatId, '🏷️ Please send a photo or type "skip".');
+      }
+      return;
+    }
+    if (state.action === 'edit' && state.step === 'value' && state.field === 'logo' && msg.text?.toLowerCase() !== 'remove') {
+      bot.sendMessage(chatId, '🏷️ Please send a photo or type "remove" to clear.');
       return;
     }
     if (state.action === 'edit' && state.step === 'value' && state.field === 'bg_image' && msg.text?.toLowerCase() !== 'remove') {
@@ -641,7 +687,11 @@ const handleEditProject = async (chatId, text, state) => {
     
     state.field = text;
     state.step = 'value';
-    if (text === 'bg_image') {
+    if (text === 'logo') {
+      bot.sendMessage(chatId, '🏷️ Send a logo image (PNG), or type "remove" to clear it:', {
+        reply_markup: { remove_keyboard: true }
+      });
+    } else if (text === 'bg_image') {
       bot.sendMessage(chatId, '🖼️ Send a background image photo, or type "remove" to clear it:', {
         reply_markup: { remove_keyboard: true }
       });
@@ -657,7 +707,20 @@ const handleEditProject = async (chatId, text, state) => {
   } else if (state.step === 'value') {
     const updates = {};
     
-    if (state.field === 'tags') {
+    if (state.field === 'logo') {
+      if (text.toLowerCase() === 'remove') {
+        await projectModel.deleteLogo(state.projectId);
+        bot.sendMessage(chatId, '✅ Logo removed.');
+      } else {
+        bot.sendMessage(chatId, '🏷️ Please send a photo (not text) to set a logo.');
+        return;
+      }
+      state.step = 'field';
+      bot.sendMessage(chatId, 'What else would you like to edit?', {
+        reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
+      });
+      return;
+    } else if (state.field === 'tags') {
       updates.tags = text.split(',').map(tag => tag.trim());
     } else if (state.field === 'order') {
       const num = parseInt(text);

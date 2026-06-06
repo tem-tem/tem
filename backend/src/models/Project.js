@@ -18,6 +18,7 @@ class Project {
       SELECT 
         p.id, p.name, p.description, p.icon, p.href, p.status,
         p.display_order, p.created_at, p.updated_at,
+        (p.logo IS NOT NULL) AS has_logo,
         (p.bg_image IS NOT NULL) AS has_bg_image,
         (p.bg_video IS NOT NULL) AS has_bg_video,
         COALESCE(
@@ -41,6 +42,7 @@ class Project {
       SELECT 
         p.id, p.name, p.description, p.icon, p.href, p.status,
         p.display_order, p.created_at, p.updated_at,
+        (p.logo IS NOT NULL) AS has_logo,
         (p.bg_image IS NOT NULL) AS has_bg_image,
         (p.bg_video IS NOT NULL) AS has_bg_video,
         COALESCE(
@@ -153,6 +155,12 @@ class Project {
         fields.push(`bg_video_mime = $${paramCount++}`);
         values.push(updates.bg_video_mime || null);
       }
+      if (updates.logo !== undefined) {
+        fields.push(`logo = $${paramCount++}`);
+        values.push(updates.logo);
+        fields.push(`logo_mime = $${paramCount++}`);
+        values.push(updates.logo_mime || null);
+      }
       
       fields.push(`updated_at = $${paramCount++}`);
       values.push(new Date());
@@ -208,6 +216,21 @@ class Project {
   async deleteBgVideo(id) {
     await this.pool.query(
       'UPDATE projects SET bg_video = NULL, bg_video_mime = NULL, updated_at = $1 WHERE id = $2',
+      [new Date(), id]
+    );
+  }
+
+  async getLogo(id) {
+    const query = 'SELECT logo, logo_mime FROM projects WHERE id = $1';
+    const result = await this.pool.query(query, [id]);
+    const row = result.rows[0];
+    if (!row || !row.logo) return null;
+    return { data: row.logo, mime: row.logo_mime || 'image/png' };
+  }
+
+  async deleteLogo(id) {
+    await this.pool.query(
+      'UPDATE projects SET logo = NULL, logo_mime = NULL, updated_at = $1 WHERE id = $2',
       [new Date(), id]
     );
   }
