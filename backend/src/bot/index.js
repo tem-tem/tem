@@ -455,7 +455,8 @@ bot.on('video', async (msg) => {
 
   try {
     const fileLink = await bot.getFileLink(msg.video.file_id);
-    const { buffer, mime } = await downloadBuffer(fileLink);
+    const { buffer } = await downloadBuffer(fileLink);
+    const mime = msg.video.mime_type || 'video/mp4';
 
     await projectModel.updateProject(state.projectId, { bg_video: buffer, bg_video_mime: mime });
     bot.sendMessage(chatId, '✅ Background video updated!');

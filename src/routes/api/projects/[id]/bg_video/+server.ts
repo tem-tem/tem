@@ -8,7 +8,8 @@ export const GET: RequestHandler = async ({ params, fetch }) => {
 		return new Response(null, { status: 404 });
 	}
 
-	const contentType = response.headers.get('Content-Type') ?? 'video/mp4';
+	const raw = response.headers.get('Content-Type') ?? '';
+	const contentType = raw.startsWith('video/') ? raw : 'video/mp4';
 	const buffer = await response.arrayBuffer();
 
 	return new Response(buffer, {
