@@ -1,0 +1,3 @@
+ALTER TABLE projects
+  ADD COLUMN IF NOT EXISTS bg_video      BYTEA,
+  ADD COLUMN IF NOT EXISTS bg_video_mime VARCHAR(100);

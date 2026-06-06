@@ -402,6 +402,14 @@ bot.onText(/\/profile/, async (msg) => {
   }
 });
 
+const EDIT_OPTIONS = [
+  ['name', 'description'],
+  ['icon', 'href'],
+  ['tags', 'status'],
+  ['bg_image', 'bg_video'],
+  ['order', 'done']
+];
+
 // Handle photo messages (bg_image upload)
 bot.on('photo', async (msg) => {
   const chatId = msg.chat.id;
@@ -425,15 +433,8 @@ bot.on('photo', async (msg) => {
       await projectModel.updateProject(state.projectId, { bg_image: buffer, bg_image_mime: mime });
       bot.sendMessage(chatId, '✅ Background image updated!');
       state.step = 'field';
-      const options = [
-        ['name', 'description'],
-        ['icon', 'href'],
-        ['tags', 'status'],
-        ['bg_image', 'order'],
-        ['done']
-      ];
       bot.sendMessage(chatId, 'What else would you like to edit?', {
-        reply_markup: { keyboard: options, one_time_keyboard: true, resize_keyboard: true }
+        reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
       });
     }
   } catch (error) {
@@ -443,10 +444,37 @@ bot.on('photo', async (msg) => {
   }
 });
 
+// Handle video messages (bg_video upload)
+bot.on('video', async (msg) => {
+  const chatId = msg.chat.id;
+  const state = userStates.get(chatId);
+  if (!state) return;
+
+  const isEditBgStep = state.action === 'edit' && state.step === 'value' && state.field === 'bg_video';
+  if (!isEditBgStep) return;
+
+  try {
+    const fileLink = await bot.getFileLink(msg.video.file_id);
+    const { buffer, mime } = await downloadBuffer(fileLink);
+
+    await projectModel.updateProject(state.projectId, { bg_video: buffer, bg_video_mime: mime });
+    bot.sendMessage(chatId, '✅ Background video updated!');
+    state.step = 'field';
+    bot.sendMessage(chatId, 'What else would you like to edit?', {
+      reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
+    });
+  } catch (error) {
+    logger.error('Error handling video upload', { chatId, message: error.message });
+    bot.sendMessage(chatId, '❌ Failed to save video. Please try again.');
+    userStates.delete(chatId);
+  }
+});
+
 // Handle text messages (multi-step interactions or Gemini AI)
 bot.on('message', async (msg) => {
   if (msg.text?.startsWith('/')) return; // Skip commands
   if (msg.photo) return; // handled by photo handler above
+  if (msg.video) return; // handled by video handler above
   
   const chatId = msg.chat.id;
   const state = userStates.get(chatId);
@@ -466,6 +494,10 @@ bot.on('message', async (msg) => {
     }
     if (state.action === 'edit' && state.step === 'value' && state.field === 'bg_image' && msg.text?.toLowerCase() !== 'remove') {
       bot.sendMessage(chatId, '📸 Please send a photo or type "remove" to clear.');
+      return;
+    }
+    if (state.action === 'edit' && state.step === 'value' && state.field === 'bg_video' && msg.text?.toLowerCase() !== 'remove') {
+      bot.sendMessage(chatId, '🎬 Please send a video or type "remove" to clear.');
       return;
     }
 
@@ -589,18 +621,10 @@ const handleEditProject = async (chatId, text, state) => {
     state.projectId = projectId;
     state.step = 'field';
     
-    const options = [
-      ['name', 'description'],
-      ['icon', 'href'],
-      ['tags', 'status'],
-      ['bg_image', 'order'],
-      ['done']
-    ];
-    
     bot.sendMessage(chatId, `📝 *Editing: ${project.name}*\n\nWhat would you like to edit?`, {
       parse_mode: 'Markdown',
       reply_markup: {
-        keyboard: options,
+        keyboard: EDIT_OPTIONS,
         one_time_keyboard: true,
         resize_keyboard: true
       }
@@ -618,6 +642,10 @@ const handleEditProject = async (chatId, text, state) => {
     state.step = 'value';
     if (text === 'bg_image') {
       bot.sendMessage(chatId, '🖼️ Send a background image photo, or type "remove" to clear it:', {
+        reply_markup: { remove_keyboard: true }
+      });
+    } else if (text === 'bg_video') {
+      bot.sendMessage(chatId, '🎬 Send a background video, or type "remove" to clear it:', {
         reply_markup: { remove_keyboard: true }
       });
     } else {
@@ -646,15 +674,21 @@ const handleEditProject = async (chatId, text, state) => {
         return;
       }
       state.step = 'field';
-      const options = [
-        ['name', 'description'],
-        ['icon', 'href'],
-        ['tags', 'status'],
-        ['bg_image', 'order'],
-        ['done']
-      ];
       bot.sendMessage(chatId, 'What else would you like to edit?', {
-        reply_markup: { keyboard: options, one_time_keyboard: true, resize_keyboard: true }
+        reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
+      });
+      return;
+    } else if (state.field === 'bg_video') {
+      if (text.toLowerCase() === 'remove') {
+        await projectModel.deleteBgVideo(state.projectId);
+        bot.sendMessage(chatId, '✅ Background video removed.');
+      } else {
+        bot.sendMessage(chatId, '🎬 Please send a video (not text) to set a background video.');
+        return;
+      }
+      state.step = 'field';
+      bot.sendMessage(chatId, 'What else would you like to edit?', {
+        reply_markup: { keyboard: EDIT_OPTIONS, one_time_keyboard: true, resize_keyboard: true }
       });
       return;
     } else {
@@ -669,17 +703,9 @@ const handleEditProject = async (chatId, text, state) => {
     
     // Go back to field selection
     state.step = 'field';
-    const options = [
-      ['name', 'description'],
-      ['icon', 'href'],
-      ['tags', 'status'],
-      ['bg_image', 'order'],
-      ['done']
-    ];
-    
     bot.sendMessage(chatId, 'What else would you like to edit?', {
       reply_markup: {
-        keyboard: options,
+        keyboard: EDIT_OPTIONS,
         one_time_keyboard: true,
         resize_keyboard: true
       }

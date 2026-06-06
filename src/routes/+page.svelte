@@ -12,8 +12,8 @@
 	$: profile = data.profile;
 </script>
 
-<div class="grid grid-cols-1 font-mono container mx-auto px-4">
-	<div class="pt-10 flex gap-2 pb-10 justify-between px-4">
+<div class="grid grid-cols-1 container mx-auto px-4">
+	<div class="pt-10 flex gap-2 pb-10 justify-between px-4 uppercase text-2xl">
 		<div class="flex flex gap-2">
 			<div class="font-bold">{profile.name}</div>
 			<div class="">{profile.intro}</div>
@@ -24,7 +24,7 @@
 		</div>
 	</div>
 
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
 		{#each projects as project}
 			<ProjectItem
 				id={project.id}
@@ -35,6 +35,8 @@
 				tags={project.tags}
 				status={project.status}
 				has_bg_image={project.has_bg_image ?? false}
+				has_bg_video={project.has_bg_video ?? false}
+				updated_at={project.updated_at}
 			/>
 		{/each}
 	</div>

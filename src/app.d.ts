@@ -23,6 +23,7 @@ export interface Project {
 	status: string;
 	display_order?: number;
 	has_bg_image?: boolean;
+	has_bg_video?: boolean;
 	created_at?: string;
 	updated_at?: string;
 }

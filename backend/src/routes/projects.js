@@ -42,6 +42,33 @@ router.delete('/:id/bg_image', async (req, res) => {
   }
 });
 
+// GET /api/projects/:id/bg_video - Serve project background video
+router.get('/:id/bg_video', async (req, res) => {
+  try {
+    const video = await projectModel.getBgVideo(req.params.id);
+    if (!video) {
+      return res.status(404).json({ error: 'No background video found' });
+    }
+    res.set('Content-Type', video.mime);
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.send(video.data);
+  } catch (error) {
+    console.error('Error fetching bg video:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// DELETE /api/projects/:id/bg_video - Remove project background video
+router.delete('/:id/bg_video', async (req, res) => {
+  try {
+    await projectModel.deleteBgVideo(req.params.id);
+    res.json({ message: 'Background video removed' });
+  } catch (error) {
+    console.error('Error deleting bg video:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // GET /api/projects/:id - Get project by ID
 router.get('/:id', async (req, res) => {
   try {

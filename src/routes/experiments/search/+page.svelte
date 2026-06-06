@@ -72,7 +72,6 @@
 		flex-direction: column;
 		gap: 24px;
 		padding-top: 40px;
-		font-family: monospace;
 		min-height: 60vh;
 		position: relative;
 	}
@@ -101,7 +100,6 @@
 		flex: 1;
 		padding: 10px 14px;
 		font-size: 14px;
-		font-family: monospace;
 		border: 1px solid #d1d5db;
 		border-radius: 0px;
 		background: #ffffff12;
@@ -117,7 +115,6 @@
 	.search-form button {
 		padding: 10px 18px;
 		font-size: 14px;
-		font-family: monospace;
 		background: #111827;
 		color: #fff;
 		border: none;

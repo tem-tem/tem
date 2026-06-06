@@ -19,6 +19,7 @@ class Project {
         p.id, p.name, p.description, p.icon, p.href, p.status,
         p.display_order, p.created_at, p.updated_at,
         (p.bg_image IS NOT NULL) AS has_bg_image,
+        (p.bg_video IS NOT NULL) AS has_bg_video,
         COALESCE(
           JSON_AGG(
             CASE WHEN pt.tag IS NOT NULL THEN pt.tag ELSE NULL END
@@ -41,6 +42,7 @@ class Project {
         p.id, p.name, p.description, p.icon, p.href, p.status,
         p.display_order, p.created_at, p.updated_at,
         (p.bg_image IS NOT NULL) AS has_bg_image,
+        (p.bg_video IS NOT NULL) AS has_bg_video,
         COALESCE(
           JSON_AGG(
             CASE WHEN pt.tag IS NOT NULL THEN pt.tag ELSE NULL END
@@ -145,6 +147,12 @@ class Project {
         fields.push(`bg_image_mime = $${paramCount++}`);
         values.push(updates.bg_image_mime || null);
       }
+      if (updates.bg_video !== undefined) {
+        fields.push(`bg_video = $${paramCount++}`);
+        values.push(updates.bg_video);
+        fields.push(`bg_video_mime = $${paramCount++}`);
+        values.push(updates.bg_video_mime || null);
+      }
       
       fields.push(`updated_at = $${paramCount++}`);
       values.push(new Date());
@@ -187,6 +195,21 @@ class Project {
     } finally {
       client.release();
     }
+  }
+
+  async getBgVideo(id) {
+    const query = 'SELECT bg_video, bg_video_mime FROM projects WHERE id = $1';
+    const result = await this.pool.query(query, [id]);
+    const row = result.rows[0];
+    if (!row || !row.bg_video) return null;
+    return { data: row.bg_video, mime: row.bg_video_mime || 'video/mp4' };
+  }
+
+  async deleteBgVideo(id) {
+    await this.pool.query(
+      'UPDATE projects SET bg_video = NULL, bg_video_mime = NULL, updated_at = $1 WHERE id = $2',
+      [new Date(), id]
+    );
   }
 
   async getBgImage(id) {

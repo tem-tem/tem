@@ -21,6 +21,7 @@
 }
 
 @theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Instrument Serif', serif;
   --font-serif-italic: 'Instrument Serif', serif;
 }
