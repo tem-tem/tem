@@ -83,7 +83,7 @@ class Profile {
     
     return {
       name: settings.name?.value || 'Tem',
-      intro: settings.intro?.value || 'I make apps and based in Chicago, IL.',
+      intro: settings.intro?.value || '',
       twitter_url: settings.twitter_url?.value || 'https://x.com/@tuna_maker',
       twitter_label: settings.twitter_label?.value || 'Twitter/X'
     };

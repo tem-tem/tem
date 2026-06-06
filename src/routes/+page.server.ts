@@ -51,7 +51,7 @@ export const load = async ({ fetch }): Promise<PageResponse> => {
       projects: [],
       profile: {
         name: 'Tem',
-        intro: 'I make apps and based in Chicago, IL.',
+        intro: '',
         twitter_url: 'https://x.com/@tuna_maker',
         twitter_label: 'Twitter/X'
       }

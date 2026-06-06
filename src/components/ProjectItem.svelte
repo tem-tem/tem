@@ -53,7 +53,7 @@
                 <img
                     src={logoUrl}
                     alt="{name} logo"
-                    class="w-20 h-20 object-contain"
+                    class="w-20 h-20 object-contain rounded-2xl"
                 />
             {/if}
         </div>
